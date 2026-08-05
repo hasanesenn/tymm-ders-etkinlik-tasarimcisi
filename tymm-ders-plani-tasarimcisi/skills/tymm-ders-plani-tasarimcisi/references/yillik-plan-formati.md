@@ -238,22 +238,23 @@ Kod uzunluğu da ayırt edici: eski Fen kodu `F.7.1.1.1`, TYMM Fen kodu `FB.5.1.
 Yıllık plan üretirken aşağıdakiler `references/` altındaki veride **yok**.
 Uydurma — öğretmenden iste ya da açıkça "doğrulayın" uyarısı koy:
 
-1. **Süreç bileşenleri (G sütunu).** `curriculum.ts` yalnızca öğrenme çıktısı
-   metnini içerir, `a) b) c) ç)` bileşenlerini içermez. Öğretmenden öğretim
-   programının ilgili sayfasını iste, ya da ürettiğin bileşenleri "programdan
-   doğrulayın" uyarısıyla ver.
-2. **Ünite ve konu adları (D ve E sütunları).** Veride ünite yalnızca *numara*
-   olarak var (`unite: 1`), adı yok.
-3. **Fen Bilimleri kod derinliği.** Veride Fen kodları dört parçalı
-   (`FB.5.1.2`), gerçek TYMM Fen kodu beş parçalıdır (`FB.5.1.2.2`) — Fen'de
-   ünite altında ayrıca *konu* seviyesi var. Veride aynı konunun birden fazla
-   çıktısı tek kayda düşmüş ve bazıları kaybolmuş (5. sınıf Fen: veride 18 kayıt,
-   çerçeve planda 28 öğrenme çıktısı). **Fen Bilimleri için kazanım kodlarını
-   veriden alma**, öğretmenden ya da çerçeve plandan al.
-4. **Akademik takvim.** Hafta tarihleri, tatiller, sınav haftaları yıla özgüdür.
-5. **Haftalık ders saati.** Dersin haftada kaç saat olduğu veride yok.
-6. **Belirli gün ve haftalar listesi** ve **ölçme-değerlendirme önerileri** veride yok.
+**F ve G sütunları artık veriden karşılanıyor.** `node scripts/lookup.mjs bilesen
+"<ders>" <sinif>` komutu öğrenme çıktısını, süreç bileşenlerini ve konu (bölüm)
+adını birlikte döndürür — bunları uydurma, sorgudan al. Fen Bilimleri'nde kodu
+**mutlaka** bu sorgudan al, `curriculum.ts`'ten değil (kodlar orada eksik derinlikte).
 
-Bu yüzden en güvenilir yol: öğretmenin elindeki **MEB taslak çerçeve yıllık planını
-temel alıp okula/sınıfa uyarlamak**; sıfırdan üretmek ancak yukarıdakiler
-öğretmenden alındığında güvenilir olur.
+Hâlâ veride olmayanlar — uydurma, öğretmenden iste ya da açıkça "doğrulayın"
+uyarısı koy:
+
+1. **Ünite adı (D sütunu).** Ünite yalnızca numara olarak var. Konu adı (E sütunu)
+   `bilesen` sorgusunun `bolum` alanından gelir, ünite adı gelmez.
+2. **Akademik takvim.** Hafta tarihleri, tatiller, sınav haftaları yıla özgüdür.
+3. **Haftalık ders saati.** Dersin haftada kaç saat olduğu veride yok.
+4. **Belirli gün ve haftalar listesi** (L) ve **ölçme-değerlendirme önerileri** (H)
+   veride yok.
+5. **Türkçe, Türk Dili ve Edebiyatı, İngilizce'de süreç bileşeni yok** — bu
+   programlar `a) b) c)` yapısı kullanmıyor. Bu derslerde G sütununu uydurma.
+
+En güvenilir yol yine öğretmenin elindeki **MEB taslak çerçeve yıllık planını temel
+alıp okula/sınıfa uyarlamak**; ama artık çerçeve plan olmadan da öğrenme çıktısı ve
+süreç bileşeni sütunları doğru doldurulabiliyor.

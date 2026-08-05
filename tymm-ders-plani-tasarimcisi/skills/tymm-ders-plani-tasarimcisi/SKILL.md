@@ -4,7 +4,7 @@ description: Türkiye Yüzyılı Maarif Modeli (TYMM) kazanımlarına dayalı ik
 license: Proprietary — TeacherX
 metadata:
   author: Hasan Esen / TeacherX
-  version: "1.1"
+  version: "1.2"
   language: tr
   domain: egitim, mufredat-tasarimi, farklilastirma
 ---
@@ -64,29 +64,44 @@ veri kaynağı var (ezbere/halüsinasyon değil):
 - `references/skills.ts` (+ `data.mjs`) — Erdem-Değer-Eylem Çerçevesi (20 değer),
   Kavramsal Beceriler, Eğilimler, Sosyal-Duygusal Öğrenme Becerileri, Okuryazarlık
   Becerileri (kod + ad + varsa tanım)
+- `references/surec-bilesenleri.mjs` — 21 ders, 1590 öğrenme çıktısı, 5385 **süreç
+  bileşeni** (`a) b) c) ç)`), her çıktının konu/bölüm adıyla. Öğretim programı
+  PDF'lerinden derlendi.
 - `scripts/lookup.mjs` — tüm dosyayı context'e dökmeden ilgili dilimi sorgulamak için:
   ```
   node scripts/lookup.mjs dersler                    # kayıtlı ders adları
   node scripts/lookup.mjs kazanim "Tarih" 10          # ders + sınıf öğrenme çıktıları
   node scripts/lookup.mjs kategoriler                 # beceri/değer kategorileri
   node scripts/lookup.mjs beceri "Eğilimler"           # bir kategorinin tam listesi
+  node scripts/lookup.mjs bilesen "Fen Bilimleri" 5   # çıktı + süreç bileşenleri
+  node scripts/lookup.mjs bilesen FB.5.1.2.2          # tek çıktının bileşenleri
   ```
+
   Ders veya kategori adı birebir eşleşmezse script sessizce boş dönmez, en yakın 3
   adayı önerir — o önerilerden doğru olanı seç, uydurma.
+
+**İki dosya çelişirse `bilesen` kazanır.** `curriculum.ts` Fen Bilimleri kodlarını
+dört parçalı derlemiş ve çıktı kaybetmiş; `surec-bilesenleri.mjs` programdaki
+gerçek beş parçalı kodu (`FB.5.1.2.2`) taşır. Fen Bilimleri'nde kazanım kodunu
+**her zaman `bilesen` sorgusundan al**. Diğer derslerde ikisi de aynı kodu verir.
 
 **Sıra şu şekilde işlesin:**
 1. Öğretmen kazanımı zaten metin/kod olarak verdiyse, aynen onu kullan.
 2. Vermediyse, `lookup.mjs kazanim` ile önce veri kaynağına bak. Ders/sınıf orada
    varsa, gerçek kazanım(lar)ı listele ve öğretmene hangisini/hangilerini
    kullanmak istediğini sor ya da en uygun olanı seçip belirt.
-3. Erdem-değer bağlantısı için `lookup.mjs beceri "Erdem-Değer-Eylem Çerçevesi"` ile
+3. Çıktının gözlenebilir adımları gerekiyorsa (ders planında öğrenme hedefleri,
+   yıllık planda süreç bileşenleri sütunu) `lookup.mjs bilesen` ile gerçek
+   bileşenleri al — kendin adım uydurma. Türkçe/Türk Dili ve Edebiyatı/İngilizce'de
+   bu yapı yok, orada bileşen üretme.
+4. Erdem-değer bağlantısı için `lookup.mjs beceri "Erdem-Değer-Eylem Çerçevesi"` ile
    gerçek değer/alt-boyut listesine bak, zorlama eşleme uydurma.
-4. **Yalnızca** ders/sınıf veri kaynağında yoksa (bilinen boşluklar: İngilizce ve
+5. **Yalnızca** ders/sınıf veri kaynağında yoksa (bilinen boşluklar: İngilizce ve
    diğer dil dersleri, Alan Becerileri, Fiziksel Beceriler) kazanım **taslağı**
    önerebilirsin — ama çıktının en üstüne kalın harflerle şu uyarıyı koy:
    **"⚠️ Bu kazanım taslaktır, veri kaynağında yok; MEB/TYMM'in güncel öğretim
    programıyla karşılaştırıp doğrulayın."**
-5. Veri kaynağı da güncel olmayabilir (derleme tarihi dosyaların başında yazılı) —
+6. Veri kaynağı da güncel olmayabilir (derleme tarihi dosyaların başında yazılı) —
    emin değilsen bunu öğretmene açıkça söyle, doğrulanmış bir kaynakmış gibi sunma.
 
 ## Mod 1 — Ders / etkinlik planı
@@ -227,19 +242,18 @@ Türkçe, sade, doğrudan uygulanabilir. MEB'in resmi/bürokratik dilini taklit 
   Türk Dili ve Edebiyatı 7, Fizik 2, Biyoloji/İlkokul Matematik/Kimya 1'er — tam liste
   dosyanın başındaki not'ta) — bu kodları kullanmadan önce orijinal ders kitabıyla
   doğrulayın.
-- **Fen Bilimleri kodları eksik derinlikte.** Veride Fen kodları dört parçalı
-  (`FB.5.1.2`), gerçek TYMM Fen kodu beş parçalıdır (`FB.5.1.2.2`) — Fen'de ünite
-  altında ayrıca *konu (içerik çerçevesi)* seviyesi var ve aynı konunun birden çok
-  öğrenme çıktısı olabiliyor. Ayrıştırma bunları tek kayda indirmiş, bir kısmı
-  kaybolmuş (5. sınıf Fen: veride 18 kayıt, MEB çerçeve yıllık planında 28 öğrenme
-  çıktısı). Fen Bilimleri için kazanım kodunu veriden alma; öğretmenden ya da
-  öğretim programından doğrula. Aynı sorunun izi (`cikti` metninin başında kalan
-  `1. `, `2. ` gibi çıktı numaraları) 67 kayıtta görünüyor, hepsi Fen Bilimleri.
-- **Süreç bileşenleri veride hiç yok.** Öğrenme çıktısının `a) b) c) ç)` alt
-  bileşenleri derlenmedi; yıllık planın süreç bileşenleri sütunu ve ders planındaki
-  gözlenebilir adımlar bu yüzden öğretim programından doğrulanmalı.
-- **Ünite ve konu adları veride yok** — ünite yalnızca numara (`unite: 1`) olarak
-  tutuluyor.
+- **`curriculum.ts`'te Fen Bilimleri kodları eksik derinlikte.** Dört parçalı
+  (`FB.5.1.2`) derlenmiş; gerçek Fen kodu beş parçalı (`FB.5.1.2.2`), çünkü Fen'de
+  ünite altında ayrıca *konu (içerik çerçevesi)* seviyesi var. Aynı konunun birden
+  çok çıktısı tek kayda inmiş ve bir kısmı kaybolmuş (5. sınıf Fen: `curriculum.ts`'te
+  18 kayıt, gerçekte 28 çıktı). **Çözüm: Fen'de `bilesen` sorgusunu kullan** —
+  `surec-bilesenleri.mjs` doğru kodları taşıyor. `curriculum.ts` henüz düzeltilmedi.
+- **Süreç bileşenleri Türkçe, Türk Dili ve Edebiyatı ve İngilizce'de yok.** Bu
+  programlar çıktının altına `a) b) c)` koymuyor (Türkçe "Öğrenme Yaşantısı"
+  paragrafı kullanıyor, İngilizce CEFR tabanlı). Bu üç derste süreç bileşeni
+  uydurma; öğretmene programın farklı yapıda olduğunu söyle.
+- **Ünite adları veride yok.** `surec-bilesenleri.mjs` çıktının *konu/bölüm* adını
+  taşır (`bolum` alanı) ama ünite adı hiçbir dosyada yok — ünite yalnızca numara.
 - Yıllık plan modu için akademik takvim, haftalık ders saati, belirli gün ve haftalar
   listesi de veride yok; ayrıntı için `references/yillik-plan-formati.md`.
 - TYMM'in erdem-değer eşlemeleri her konuda doğal biçimde kurulamayabilir; zorlama

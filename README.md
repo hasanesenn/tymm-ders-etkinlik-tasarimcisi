@@ -75,14 +75,16 @@ işaretler.
   ve Ahlak Bilgisi 19, Matematik 8, Ortaokul Matematik 8, Türk Dili ve
   Edebiyatı 7, Fizik 2, Biyoloji/İlkokul Matematik/Kimya 1'er) — tam liste
   `references/curriculum.ts` başındaki notta; kullanmadan önce doğrulayın.
-- **Fen Bilimleri kodları eksik derinlikte.** Veride Fen kodu dört parçalı
-  (`FB.5.1.2`), gerçek TYMM Fen kodu beş parçalı (`FB.5.1.2.2`); aynı konunun
-  birden çok öğrenme çıktısı tek kayda inmiş ve bir kısmı kaybolmuş (5. sınıf
-  Fen: veride 18, çerçeve planda 28 çıktı). Fen için kazanım kodunu öğretim
-  programından doğrulayın.
-- **Süreç bileşenleri (`a) b) c) ç)`) ve ünite/konu adları veride yok.** Yıllık
-  plan üretirken bunlar öğretmenden ya da öğretim programından alınmalı; akademik
-  takvim ve haftalık ders saati de veride yok.
+- **`curriculum.ts`'te Fen Bilimleri kodları eksik derinlikte** — dört parçalı
+  (`FB.5.1.2`) derlenmiş, gerçek Fen kodu beş parçalı (`FB.5.1.2.2`); aynı konunun
+  birden çok çıktısı tek kayda inmiş (5. sınıf Fen: 18 yerine 28 çıktı olmalı).
+  `surec-bilesenleri.mjs` doğru kodları taşıyor ve skill Fen'de onu kullanıyor,
+  ama `curriculum.ts` henüz düzeltilmedi.
+- **Türkçe, Türk Dili ve Edebiyatı ve İngilizce'de süreç bileşeni yok** — bu
+  programlar `a) b) c)` yapısı yerine "Öğrenme Yaşantısı" paragrafı / CEFR yapısı
+  kullanıyor.
+- **Ünite adları hiçbir dosyada yok** (ünite yalnızca numara). Yıllık plan için
+  akademik takvim ve haftalık ders saati de veride yok.
 - Veri kaynağı 2026-08-05 tarihli bir anlık görüntüdür.
 
 ## Katkı / güncelleme

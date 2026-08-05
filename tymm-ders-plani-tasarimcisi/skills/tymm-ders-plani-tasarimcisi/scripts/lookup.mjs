@@ -16,10 +16,18 @@
 //   node scripts/lookup.mjs kategoriler
 //     → SKILLS içindeki tüm kategori adlarını listeler
 //
+//   node scripts/lookup.mjs bilesen "Fen Bilimleri" 5
+//     → o ders + sınıfın öğrenme çıktılarını SÜREÇ BİLEŞENLERİYLE döndürür
+//       (yıllık planın SÜREÇ BİLEŞENLERİ sütunu için)
+//
+//   node scripts/lookup.mjs bilesen FB.5.1.2.2
+//     → tek bir öğrenme çıktısının bileşenlerini döndürür
+//
 // Ders/kategori adı verilenle birebir eşleşmezse (yazım farkı, boşluk vb.)
 // en yakın 3 adayı önerir — sessizce boş dönmez.
 
 import { CURRICULUM, SKILLS, getKazanimlar, getBeceriler } from "../references/data.mjs"
+import { SUREC_BILESENLERI, getBilesenler } from "../references/surec-bilesenleri.mjs"
 
 const [, , cmd, arg1, arg2] = process.argv
 
@@ -66,7 +74,34 @@ if (cmd === "dersler") {
     process.exit(1)
   }
   console.log(JSON.stringify(getBeceriler(arg1), null, 2))
+} else if (cmd === "bilesen") {
+  if (!arg1) { console.error("Kullanım: bilesen <ders> [sinif]  |  bilesen <kod>"); process.exit(1) }
+  // Tek kod sorgusu: "FB.5.1.2.2" gibi
+  if (/^[A-ZÇĞİÖŞÜ]{2,5}\.\d/.test(arg1)) {
+    const k = getBilesenler(arg1)
+    if (!k) {
+      console.error(`"${arg1}" için süreç bileşeni yok. Kod doğru mu? Fen kodları beş parçalıdır (FB.5.1.2.2).`)
+      process.exit(1)
+    }
+    console.log(JSON.stringify(k, null, 2))
+  } else {
+    if (!SUREC_BILESENLERI[arg1]) {
+      console.error(`"${arg1}" bulunamadı. Yakın adaylar:`, enYakinAdaylar(arg1, Object.keys(SUREC_BILESENLERI)))
+      console.error("Not: Türkçe, Türk Dili ve Edebiyatı ve İngilizce programlarında süreç bileşeni yok.")
+      process.exit(1)
+    }
+    const sinif = arg2 ? Number(arg2) : undefined
+    const sonuc = sinif
+      ? SUREC_BILESENLERI[arg1].filter((k) => k.sinif === sinif)
+      : SUREC_BILESENLERI[arg1]
+    if (sonuc.length === 0) {
+      console.error(`"${arg1}" için ${sinif}. sınıfta kayıt yok. Mevcut sınıflar:`,
+        [...new Set(SUREC_BILESENLERI[arg1].map((k) => k.sinif))].sort((a, b) => a - b))
+      process.exit(1)
+    }
+    console.log(JSON.stringify(sonuc, null, 2))
+  }
 } else {
-  console.error("Komutlar: dersler | kategoriler | kazanim <ders> [sinif] | beceri <kategori>")
+  console.error("Komutlar: dersler | kategoriler | kazanim <ders> [sinif] | beceri <kategori> | bilesen <ders> [sinif] | bilesen <kod>")
   process.exit(1)
 }
