@@ -1,0 +1,15 @@
+{
+  "name": "tymm-egitim-araclari",
+  "owner": {
+    "name": "TeacherX"
+  },
+  "description": "Türkiye Yüzyılı Maarif Modeli (TYMM) temelli öğretmen araçları — TeacherX tarafından hazırlandı.",
+  "plugins": [
+    {
+      "name": "tymm-ders-plani-tasarimcisi",
+      "source": "./tymm-ders-plani-tasarimcisi",
+      "description": "TYMM kazanımına göre aktif öğrenme + farklılaştırma içeren ders/etkinlik planı üretir.",
+      "keywords": ["tymm", "maarif-modeli", "ders-plani", "farklilastirma", "aktif-ogrenme"]
+    }
+  ]
+}

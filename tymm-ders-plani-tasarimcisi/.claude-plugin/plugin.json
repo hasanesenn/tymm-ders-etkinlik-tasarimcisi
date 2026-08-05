@@ -1,0 +1,8 @@
+{
+  "name": "tymm-ders-plani-tasarimcisi",
+  "description": "Türkiye Yüzyılı Maarif Modeli (TYMM) kazanımlarına dayalı, aktif öğrenme ve farklılaştırma stratejileri içeren ders/etkinlik planı üretir.",
+  "version": "1.0.0",
+  "author": {
+    "name": "TeacherX"
+  }
+}
