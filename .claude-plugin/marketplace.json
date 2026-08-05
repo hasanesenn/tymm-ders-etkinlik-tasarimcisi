@@ -8,8 +8,16 @@
     {
       "name": "tymm-ders-plani-tasarimcisi",
       "source": "./tymm-ders-plani-tasarimcisi",
-      "description": "TYMM kazanımına göre aktif öğrenme + farklılaştırma içeren ders/etkinlik planı üretir.",
-      "keywords": ["tymm", "maarif-modeli", "ders-plani", "farklilastirma", "aktif-ogrenme"]
+      "description": "TYMM kazanımına göre aktif öğrenme + farklılaştırma içeren ders/etkinlik planı ve MEB biçiminde çerçeve yıllık plan üretir.",
+      "keywords": [
+        "tymm",
+        "maarif-modeli",
+        "ders-plani",
+        "yillik-plan",
+        "cerceve-plan",
+        "farklilastirma",
+        "aktif-ogrenme"
+      ]
     }
   ]
 }

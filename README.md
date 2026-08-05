@@ -1,8 +1,13 @@
 # TYMM Ders/Etkinlik Planı Tasarımcısı
 
-Türkiye Yüzyılı Maarif Modeli (TYMM) kazanımlarına, aktif öğrenme yaklaşımlarına
-(yaşantısal, bağlamsal, sorgulamaya dayalı, iş birlikli, proje temelli öğrenme) ve
-farklılaştırma stratejilerine dayalı ders/etkinlik planı üreten bir Claude skill'i.
+Türkiye Yüzyılı Maarif Modeli (TYMM) temelli iki tür plan üreten bir Claude skill'i:
+
+- **Ders/etkinlik planı** — kazanıma dayalı, aktif öğrenme yaklaşımları (yaşantısal,
+  bağlamsal, sorgulamaya dayalı, iş birlikli, proje temelli öğrenme) ve
+  farklılaştırma stratejileri (içerik/süreç/ürün/öğrenme ortamı) ile.
+- **Çerçeve yıllık plan** — MEB'in TYMM taslak çerçeve yıllık plan biçiminde; öğrenme
+  çıktıları, süreç bileşenleri, öğrenme kanıtları, programlar arası bileşenler
+  (SDB/değerler/okuryazarlık), farklılaştırma ve okul temelli planlama sütunlarıyla.
 
 TeacherX tarafından hazırlanmıştır. Kazanım ve beceri/değer verileri
 [tymm.meb.gov.tr](https://tymm.meb.gov.tr)'den derlenmiştir (bkz.
@@ -51,6 +56,16 @@ Skill otomatik devreye girer; kazanımı kendi veri kaynağından bulur, TYMM'in
 erdem-değer çerçevesiyle ilişkilendirir, aktif öğrenme + farklılaştırma
 tablosu ekler.
 
+Yıllık plan için de aynı şekilde isteyin:
+
+> "6. sınıf Fen Bilimleri için TYMM çerçeve yıllık planı hazırlar mısın?"
+
+Elinizde MEB'in taslak çerçeve yıllık planı varsa paylaşın — skill onu iskelet
+olarak alıp okul temelli planlama haftalarını, farklılaştırma ve ölçme-değerlendirme
+sütunlarını sizin sınıfınıza göre yeniden yazar. Elinizde yoksa eksik bilgileri
+(takvim, haftalık ders saati, ünite adları) sorar ve ürettiği planı taslak olarak
+işaretler.
+
 ## Bilinen sınırlar
 
 - Kazanım verisi (`references/curriculum.ts`) 24 ders, ~1800 öğrenme çıktısı
@@ -60,6 +75,14 @@ tablosu ekler.
   ve Ahlak Bilgisi 19, Matematik 8, Ortaokul Matematik 8, Türk Dili ve
   Edebiyatı 7, Fizik 2, Biyoloji/İlkokul Matematik/Kimya 1'er) — tam liste
   `references/curriculum.ts` başındaki notta; kullanmadan önce doğrulayın.
+- **Fen Bilimleri kodları eksik derinlikte.** Veride Fen kodu dört parçalı
+  (`FB.5.1.2`), gerçek TYMM Fen kodu beş parçalı (`FB.5.1.2.2`); aynı konunun
+  birden çok öğrenme çıktısı tek kayda inmiş ve bir kısmı kaybolmuş (5. sınıf
+  Fen: veride 18, çerçeve planda 28 çıktı). Fen için kazanım kodunu öğretim
+  programından doğrulayın.
+- **Süreç bileşenleri (`a) b) c) ç)`) ve ünite/konu adları veride yok.** Yıllık
+  plan üretirken bunlar öğretmenden ya da öğretim programından alınmalı; akademik
+  takvim ve haftalık ders saati de veride yok.
 - Veri kaynağı 2026-08-05 tarihli bir anlık görüntüdür.
 
 ## Katkı / güncelleme

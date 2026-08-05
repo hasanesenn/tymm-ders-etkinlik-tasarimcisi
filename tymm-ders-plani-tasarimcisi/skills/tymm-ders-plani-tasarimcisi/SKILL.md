@@ -1,33 +1,30 @@
 ---
 name: tymm-ders-plani-tasarimcisi
-description: Türkiye Yüzyılı Maarif Modeli (TYMM) kazanımlarına dayalı, aktif öğrenme yaklaşımları (yaşantısal, bağlamsal, sorgulamaya dayalı, iş birlikli, proje temelli öğrenme) ve farklılaştırma stratejileri (içerik/süreç/ürün/öğrenme ortamı) içeren ders ve etkinlik planı üretir. Bir öğretmen ders planı, etkinlik tasarımı, farklılaştırılmış öğrenme materyali veya TYMM'e uygun bir öğrenme deneyimi istediğinde kullan.
+description: Türkiye Yüzyılı Maarif Modeli (TYMM) kazanımlarına dayalı iki tür plan üretir — (1) aktif öğrenme yaklaşımları (yaşantısal, bağlamsal, sorgulamaya dayalı, iş birlikli, proje temelli) ve farklılaştırma stratejileri içeren ders/etkinlik planı, (2) MEB taslak çerçeve yıllık plan biçiminde ünitelendirilmiş yıllık plan (öğrenme çıktıları, süreç bileşenleri, öğrenme kanıtları, programlar arası bileşenler, farklılaştırma, okul temelli planlama sütunlarıyla). Bir öğretmen ders planı, etkinlik tasarımı, farklılaştırılmış öğrenme materyali, ünitelendirilmiş yıllık plan, çerçeve yıllık plan uyarlaması veya TYMM'e uygun bir öğrenme deneyimi istediğinde kullan.
 license: Proprietary — TeacherX
 metadata:
   author: Hasan Esen / TeacherX
-  version: "1.0"
+  version: "1.1"
   language: tr
   domain: egitim, mufredat-tasarimi, farklilastirma
 ---
 
 # TYMM Ders / Etkinlik Planı Tasarımcısı
 
-## Bu skill ne yapar
+## İki mod
 
-Bir öğretmenin verdiği ders, sınıf düzeyi ve kazanımdan yola çıkarak; Türkiye Yüzyılı
-Maarif Modeli'nin (TYMM) öngördüğü aktif öğrenme yaklaşımlarını ve farklılaştırma
-ilkelerini somut, sınıfta doğrudan uygulanabilir bir ders/etkinlik planına dönüştürür.
-Amaç genel geçer bir "ders planı şablonu" doldurmak değil; kazanımı, TYMM'in erdem-değer
-çerçevesini ve sınıftaki gerçek öğrenci çeşitliliğini birbirine bağlayan, öğretmenin
-gerçekten sınıfta kullanacağı bir belge üretmektir.
+Öğretmenin isteğine göre iki farklı çıktı üretilir. Önce hangisinin istendiğini belirle:
 
-## Ne zaman kullanılır
+| İstek | Mod | Nereye bak |
+|---|---|---|
+| "Şu kazanım için ders planı", "bu konuyu nasıl işlerim", "etkinlik tasarla", "farklılaştırma önerisi" | **Mod 1 — Ders/etkinlik planı** | Bu dosyanın devamı |
+| "Yıllık plan", "ünitelendirilmiş yıllık plan", "çerçeve plan", "yıla yayılmış plan", "zümre planı" | **Mod 2 — Çerçeve yıllık plan** | `references/yillik-plan-formati.md` — okumadan yıllık plan üretme |
 
-- "Bu kazanım için ders planı hazırlar mısın" gibi istekler
-- "Bu konuyu aktif öğrenme ile nasıl işlerim" soruları
-- "Bu sınıfta hem geri kalan hem ileri düzey öğrenciler var, farklılaştırma önerisi ister
-  misin" gibi farklılaştırma talepleri
-- TYMM'e/Maarif Modeli'ne uygun etkinlik, öğrenme deneyimi veya ölçme-değerlendirme
-  önerisi istendiğinde
+İkisi farklı belgelerdir: Mod 1 tek bir dersin/etkinliğin nasıl işleneceğini anlatır,
+Mod 2 tüm öğretim yılını haftalara bölen bir tablodur. Terminolojileri de farklıdır —
+en belirgin fark farklılaştırmanın yazılışı (Mod 1: içerik/süreç/ürün/öğrenme ortamı
+tablosu; Mod 2: Zenginleştirme/Destekleme blokları). Öğretmen "plan" deyip hangisini
+kastettiğini belli etmiyorsa sor.
 
 ## Zemin: Türkiye Yüzyılı Maarif Modeli'nin temel çerçevesi
 
@@ -92,7 +89,27 @@ veri kaynağı var (ezbere/halüsinasyon değil):
 5. Veri kaynağı da güncel olmayabilir (derleme tarihi dosyaların başında yazılı) —
    emin değilsen bunu öğretmene açıkça söyle, doğrulanmış bir kaynakmış gibi sunma.
 
-## Girdi olarak isteyeceklerin
+## Mod 1 — Ders / etkinlik planı
+
+### Amaç
+
+Bir öğretmenin verdiği ders, sınıf düzeyi ve kazanımdan yola çıkarak; Türkiye Yüzyılı
+Maarif Modeli'nin (TYMM) öngördüğü aktif öğrenme yaklaşımlarını ve farklılaştırma
+ilkelerini somut, sınıfta doğrudan uygulanabilir bir ders/etkinlik planına dönüştürür.
+Amaç genel geçer bir "ders planı şablonu" doldurmak değil; kazanımı, TYMM'in erdem-değer
+çerçevesini ve sınıftaki gerçek öğrenci çeşitliliğini birbirine bağlayan, öğretmenin
+gerçekten sınıfta kullanacağı bir belge üretmektir.
+
+### Ne zaman kullanılır
+
+- "Bu kazanım için ders planı hazırlar mısın" gibi istekler
+- "Bu konuyu aktif öğrenme ile nasıl işlerim" soruları
+- "Bu sınıfta hem geri kalan hem ileri düzey öğrenciler var, farklılaştırma önerisi ister
+  misin" gibi farklılaştırma talepleri
+- TYMM'e/Maarif Modeli'ne uygun etkinlik, öğrenme deneyimi veya ölçme-değerlendirme
+  önerisi istendiğinde
+
+### Girdi olarak isteyeceklerin
 
 Öğretmen aşağıdakileri vermediyse, plana başlamadan önce kısaca sor (hepsini tek tek
 sormak yerine tek mesajda topla):
@@ -107,7 +124,7 @@ sormak yerine tek mesajda topla):
 Sınıf profili verilmediyse, genel bir heterojen sınıf varsayımıyla ilerle ve bunu
 çıktıda açıkça belirt.
 
-## Aktif öğrenme entegrasyonu — nasıl uygulanır
+### Aktif öğrenme entegrasyonu — nasıl uygulanır
 
 Her planda TYMM'in beş yaklaşımından **en az ikisi**, somut ve zaman etiketli bir
 etkinlik adımına dönüşmeli — "öğrenciler tartışsın" gibi belirsiz ifadeler yeterli değil:
@@ -122,7 +139,7 @@ etkinlik adımına dönüşmeli — "öğrenciler tartışsın" gibi belirsiz if
 
 Tek yönlü anlatım/dinleme sadece giriş kısmında, kısa ve gerekçeli olarak yer alabilir.
 
-## Farklılaştırma entegrasyonu — nasıl uygulanır
+### Farklılaştırma entegrasyonu — nasıl uygulanır
 
 Tomlinson'ın içerik / süreç / ürün / öğrenme ortamı çerçevesini kullan; TYMM'in beceri
 ve eğilim vurgusuyla uyumlu tut. Her planda en az üç öğrenci profili için (destek
@@ -137,7 +154,7 @@ gereken, ortalama, ileri düzey/hızlı tamamlayan) somut bir farklılaştırma 
 Genel geçer "ileri düzeye ekstra ödev ver" gibi yüzeysel önerilerden kaçın; her hücre o
 dersin somut içeriğine göre yazılmalı.
 
-## Çıktı şablonu
+### Çıktı şablonu
 
 1. **Üst bilgi** — ders, sınıf, süre, kazanım (kaynağı belirt: verilen / taslak)
 2. **Kazanım – erdem/değer bağlantısı** — bu dersin içeriği hangi TYMM değeriyle/
@@ -151,6 +168,49 @@ dersin somut içeriğine göre yazılmalı.
    ürün/dönüt önerileri
 7. **Materyal/kaynak listesi**
 8. **Öğretmen notu** — olası zorluklar, B planı, süre kısalırsa nereden kısılabilir
+
+## Mod 2 — Çerçeve yıllık plan
+
+MEB'in TYMM'e geçen derslerde yayımladığı **taslak çerçeve yıllık plan** biçiminde,
+öğretim yılının tamamını haftalara bölen 14 sütunlu bir tablo üretilir.
+
+**Önce `references/yillik-plan-formati.md` dosyasını oku.** Sütun yapısı, ders saati
+gösterimi (`2+2`, `2+(2)*`), özel satırlar (ara tatil, bayram, okul temelli planlama,
+sınav haftası), farklılaştırma dili ve mevzuat dayanağı orada tanımlı. Ezberden
+üretme — biçim eski yıllık plan biçiminden belirgin şekilde farklı.
+
+### İki farklı senaryo
+
+**A) Öğretmenin elinde MEB çerçeve planı var (tercih edilen yol).** Öğretmenden
+planı paylaşmasını iste, iskeleti aynen koru ve okula/sınıfa uyarla:
+- `OKUL TEMELLİ PLANLAMA` haftalarını zümre kararına göre doldur
+- `FARKLILAŞTIRMA` sütununu sınıfın gerçek profiline göre yeniden yaz
+- `ÖLÇME VE DEĞERLENDİRME` önerilerini somut görevlere dönüştür
+- Ünite sürelerini okul takvimine (tatil, tören, sınav haftası) göre kaydır
+
+Çerçeve plandaki öğrenme çıktısı kodlarını, süreç bileşenlerini ve ünite adlarını
+**değiştirme** — bunlar öğretim programından gelir.
+
+**B) Elinde çerçeve plan yok.** Bu durumda tam güvenilir bir plan üretilemez;
+`references/` verisinde süreç bileşenleri, ünite/konu adları, akademik takvim ve
+haftalık ders saati yok (ayrıntı için biçim dosyasının son bölümü). Şunları yap:
+1. Öğretmenden eksikleri iste: ders + sınıf, haftalık ders saati, öğretim yılı
+   takvimi, ünite adları ve sıralaması, varsa süreç bileşenleri.
+2. Veremediklerini taslak olarak üret ama o hücreleri açıkça işaretle.
+3. Çıktının en üstüne şu uyarıyı koy:
+   **"⚠️ Bu plan taslaktır. Öğrenme çıktısı kodları, süreç bileşenleri ve takvim
+   MEB'in güncel öğretim programı ve çerçeve yıllık planıyla karşılaştırılmalıdır."**
+
+### Çıktı biçimi
+
+Varsayılan olarak markdown tablo üret; sütun sayısı fazla olduğu için haftaları
+**ünite bloklarına** ayırıp her blok için ayrı tablo vermek okunabilirliği artırır.
+Öğretmen Excel/Word isterse, sütun sırasını ve başlık gruplarını bozmadan üret
+(iki seviyeli başlık: grup satırı + alt başlık satırı).
+
+Dikey birleştirilen sütunlar — `OKUL TEMELLİ PLANLAMA` (yıla tek), `FARKLILAŞTIRMA`
+ve programlar arası bileşenler (ünite bloğuna) — markdown'da her satırda
+tekrarlanmak yerine blok başında bir kez yazılır.
 
 ## Ton ve dil
 
@@ -167,6 +227,21 @@ Türkçe, sade, doğrudan uygulanabilir. MEB'in resmi/bürokratik dilini taklit 
   Türk Dili ve Edebiyatı 7, Fizik 2, Biyoloji/İlkokul Matematik/Kimya 1'er — tam liste
   dosyanın başındaki not'ta) — bu kodları kullanmadan önce orijinal ders kitabıyla
   doğrulayın.
+- **Fen Bilimleri kodları eksik derinlikte.** Veride Fen kodları dört parçalı
+  (`FB.5.1.2`), gerçek TYMM Fen kodu beş parçalıdır (`FB.5.1.2.2`) — Fen'de ünite
+  altında ayrıca *konu (içerik çerçevesi)* seviyesi var ve aynı konunun birden çok
+  öğrenme çıktısı olabiliyor. Ayrıştırma bunları tek kayda indirmiş, bir kısmı
+  kaybolmuş (5. sınıf Fen: veride 18 kayıt, MEB çerçeve yıllık planında 28 öğrenme
+  çıktısı). Fen Bilimleri için kazanım kodunu veriden alma; öğretmenden ya da
+  öğretim programından doğrula. Aynı sorunun izi (`cikti` metninin başında kalan
+  `1. `, `2. ` gibi çıktı numaraları) 67 kayıtta görünüyor, hepsi Fen Bilimleri.
+- **Süreç bileşenleri veride hiç yok.** Öğrenme çıktısının `a) b) c) ç)` alt
+  bileşenleri derlenmedi; yıllık planın süreç bileşenleri sütunu ve ders planındaki
+  gözlenebilir adımlar bu yüzden öğretim programından doğrulanmalı.
+- **Ünite ve konu adları veride yok** — ünite yalnızca numara (`unite: 1`) olarak
+  tutuluyor.
+- Yıllık plan modu için akademik takvim, haftalık ders saati, belirli gün ve haftalar
+  listesi de veride yok; ayrıntı için `references/yillik-plan-formati.md`.
 - TYMM'in erdem-değer eşlemeleri her konuda doğal biçimde kurulamayabilir; zorlama
   eşleme yapmaktansa o bölümü kısa tutmak ya da atlamak tercih edilmeli.
 - Veri kaynağı 2026-08-05 tarihli bir anlık görüntüdür; TYMM programları güncellenirse
