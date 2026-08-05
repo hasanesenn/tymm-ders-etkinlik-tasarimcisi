@@ -5,8 +5,11 @@
 // 24 ders, 1800 öğrenme çıktısı (1801 - 1 silinen)
 //
 // BİLİNEN AÇIK SORUNLAR (düzeltilmedi, orijinal PDF'e bakılmadan tahmin edilemez):
-//   - 9 DKAB kaydı ve FİZ.12.1.3 parantez içinde kesik ("Allah'ın (c", "İtme (impul") —
-//     kullanmadan önce orijinal ders kitabıyla doğrulayın
+//   - 47 kayıt parantez içinde kesik kalmış (açık "(" var, kapanan ")" yok) —
+//     dağılım: Din Kültürü ve Ahlak Bilgisi 19, Matematik 8, Ortaokul Matematik 8,
+//     Türk Dili ve Edebiyatı 7, Fizik 2, Biyoloji 1, İlkokul Matematik 1, Kimya 1.
+//     Örnek: DKAB.9.1.3 "Allah (c", MAT.9.2.1 "Gerçek sayılarda f(".
+//     Bu 47 kaydın hiçbirini kullanmadan önce orijinal ders kitabıyla doğrulayın.
 //   - İngilizce dersi çıktı listesinde hiç yok — dil programı muhtemelen CEFR tabanlı
 //     farklı bir kod yapısı kullanıyor, scraper hiç eşleşme bulamamış
 

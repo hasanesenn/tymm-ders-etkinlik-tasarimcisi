@@ -162,9 +162,11 @@ Türkçe, sade, doğrudan uygulanabilir. MEB'in resmi/bürokratik dilini taklit 
 - Veri kaynağının kapsamadığı alanlar: İngilizce ve diğer dil dersleri (CEFR tabanlı
   farklı bir yapı kullanıyor), Alan Becerileri (tek sayfa değil, her ders ailesi için
   ayrı bir kaynak — henüz derlenmedi), Fiziksel Beceriler (kaynakta ayrı kod listesi yok).
-- `references/curriculum.ts`'te 9 Din Kültürü ve Ahlak Bilgisi kaydı ile bir Fizik kaydı
-  PDF ayrıştırma sırasında parantez içinde kesilmiş kalmış (dosyanın başındaki not'a
-  bakın) — bu kodları kullanmadan önce orijinal ders kitabıyla doğrulayın.
+- `references/curriculum.ts`'te 47 kayıt PDF ayrıştırma sırasında parantez içinde
+  kesilmiş kalmış (Din Kültürü ve Ahlak Bilgisi 19, Matematik 8, Ortaokul Matematik 8,
+  Türk Dili ve Edebiyatı 7, Fizik 2, Biyoloji/İlkokul Matematik/Kimya 1'er — tam liste
+  dosyanın başındaki not'ta) — bu kodları kullanmadan önce orijinal ders kitabıyla
+  doğrulayın.
 - TYMM'in erdem-değer eşlemeleri her konuda doğal biçimde kurulamayabilir; zorlama
   eşleme yapmaktansa o bölümü kısa tutmak ya da atlamak tercih edilmeli.
 - Veri kaynağı 2026-08-05 tarihli bir anlık görüntüdür; TYMM programları güncellenirse

@@ -56,8 +56,10 @@ tablosu ekler.
 - Kazanım verisi (`references/curriculum.ts`) 24 ders, ~1800 öğrenme çıktısı
   kapsıyor. **İngilizce ve diğer dil dersleri, Alan Becerileri, Fiziksel
   Beceriler** kapsam dışı — bkz. dosyaların başındaki notlar.
-- 9 Din Kültürü ve Ahlak Bilgisi kaydı ile 1 Fizik kaydı PDF ayrıştırma
-  sırasında kesik kalmış; kullanmadan önce doğrulayın.
+- 47 kayıt PDF ayrıştırma sırasında parantez içinde kesik kalmış (Din Kültürü
+  ve Ahlak Bilgisi 19, Matematik 8, Ortaokul Matematik 8, Türk Dili ve
+  Edebiyatı 7, Fizik 2, Biyoloji/İlkokul Matematik/Kimya 1'er) — tam liste
+  `references/curriculum.ts` başındaki notta; kullanmadan önce doğrulayın.
 - Veri kaynağı 2026-08-05 tarihli bir anlık görüntüdür.
 
 ## Katkı / güncelleme
