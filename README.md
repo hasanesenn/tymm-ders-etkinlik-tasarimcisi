@@ -14,7 +14,8 @@ TeacherX tarafından hazırlanmıştır. Kazanım ve beceri/değer verileri
 
 Team/Enterprise organizasyonu gerekmez, Free/Pro/Max hesabında da çalışır.
 
-1. Bu reponun sağındaki **Releases** bölümünden en güncel
+1. Bu reponun sağındaki **[Releases](https://github.com/hasanesenn/tymm-ders-etkinlik-tasarimcisi/releases/latest)**
+   bölümünden en güncel
    `tymm-ders-plani-tasarimcisi.zip` dosyasını indirin (kuruluma hazır,
    içinde doğrudan SKILL.md var — repoyu bütün olarak indirmenize gerek yok).
 2. claude.ai → sağ üstte profil ikonu → **Settings → Capabilities**'te
@@ -30,7 +31,12 @@ linkini yapıştırmanız yeterli, indirme/paketleme Claude tarafında otomatik 
 
 1. Claude Desktop'ı açın, **Cowork** sekmesine geçin.
 2. **Customize → Plugins** → "+" → **"Add marketplace"**.
-3. Bu reponun adresini yapıştırın (`owner/repo` formatında da olur).
+3. Bu reponun adresini yapıştırın:
+
+   ```
+   hasanesenn/tymm-ders-etkinlik-tasarimcisi
+   ```
+
 4. Listede çıkan **tymm-ders-plani-tasarimcisi** plugin'ini **Install** edin.
 5. Kurulan plugin'in skill'i hem Cowork'te hem normal web sohbetinde kullanılabilir.
 
