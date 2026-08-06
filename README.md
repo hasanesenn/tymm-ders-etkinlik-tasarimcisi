@@ -9,7 +9,7 @@ Türkiye Yüzyılı Maarif Modeli (TYMM) temelli iki tür plan üreten bir Claud
   çıktıları, süreç bileşenleri, öğrenme kanıtları, programlar arası bileşenler
   (SDB/değerler/okuryazarlık), farklılaştırma ve okul temelli planlama sütunlarıyla.
 
-TeacherX tarafından hazırlanmıştır. Kazanım ve beceri/değer verileri
+Hasan Esen tarafından hazırlanmıştır. Kazanım ve beceri/değer verileri
 [tymm.meb.gov.tr](https://tymm.meb.gov.tr)'den derlenmiştir (bkz.
 [Bilinen sınırlar](#bilinen-sınırlar)).
 
