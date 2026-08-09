@@ -68,9 +68,12 @@ işaretler.
 
 ## Bilinen sınırlar
 
-- Kazanım verisi (`references/curriculum.ts`) 24 ders, ~1800 öğrenme çıktısı
+- Kazanım verisi (`references/curriculum.ts`) 24 ders, 1792 öğrenme çıktısı
   kapsıyor. **İngilizce ve diğer dil dersleri, Alan Becerileri, Fiziksel
   Beceriler** kapsam dışı — bkz. dosyaların başındaki notlar.
+- **5 Matematik kaydı yarım kalmış** (MAT.9.2.1, MAT.10.2.2, MAT.10.2.3,
+  MAT.11.1.3, MAT.11.1.5) — uzun, çok satırlı formül içeren çıktılar.
+  Kullanmadan önce ders kitabıyla doğrulayın. (v1.3.0'dan önce bu sayı 47'ydi.)
 - 47 kayıt PDF ayrıştırma sırasında parantez içinde kesik kalmış (Din Kültürü
   ve Ahlak Bilgisi 19, Matematik 8, Ortaokul Matematik 8, Türk Dili ve
   Edebiyatı 7, Fizik 2, Biyoloji/İlkokul Matematik/Kimya 1'er) — tam liste

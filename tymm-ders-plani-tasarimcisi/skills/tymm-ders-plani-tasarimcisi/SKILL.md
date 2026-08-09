@@ -4,7 +4,7 @@ description: Türkiye Yüzyılı Maarif Modeli (TYMM) kazanımlarına dayalı ik
 license: Proprietary — TeacherX
 metadata:
   author: Hasan Esen / TeacherX
-  version: "1.2"
+  version: "1.3"
   language: tr
   domain: egitim, mufredat-tasarimi, farklilastirma
 ---
@@ -60,7 +60,7 @@ Bu skill'in yanında gerçek, deterministik olarak tymm.meb.gov.tr'den derlenmi�
 veri kaynağı var (ezbere/halüsinasyon değil):
 
 - `references/curriculum.ts` (+ çalıştırılabilir hâli `references/data.mjs`) — 24 ders,
-  ~1800 öğrenme çıktısı, kod + sınıf + ünite + metin
+  1792 öğrenme çıktısı, kod + sınıf + ünite + metin
 - `references/skills.ts` (+ `data.mjs`) — Erdem-Değer-Eylem Çerçevesi (20 değer),
   Kavramsal Beceriler, Eğilimler, Sosyal-Duygusal Öğrenme Becerileri, Okuryazarlık
   Becerileri (kod + ad + varsa tanım)
@@ -237,11 +237,11 @@ Türkçe, sade, doğrudan uygulanabilir. MEB'in resmi/bürokratik dilini taklit 
 - Veri kaynağının kapsamadığı alanlar: İngilizce ve diğer dil dersleri (CEFR tabanlı
   farklı bir yapı kullanıyor), Alan Becerileri (tek sayfa değil, her ders ailesi için
   ayrı bir kaynak — henüz derlenmedi), Fiziksel Beceriler (kaynakta ayrı kod listesi yok).
-- `references/curriculum.ts`'te 47 kayıt PDF ayrıştırma sırasında parantez içinde
-  kesilmiş kalmış (Din Kültürü ve Ahlak Bilgisi 19, Matematik 8, Ortaokul Matematik 8,
-  Türk Dili ve Edebiyatı 7, Fizik 2, Biyoloji/İlkokul Matematik/Kimya 1'er — tam liste
-  dosyanın başındaki not'ta) — bu kodları kullanmadan önce orijinal ders kitabıyla
-  doğrulayın.
+- `references/curriculum.ts`'te **5 Matematik kaydı** hâlâ yarım kalmış: uzun,
+  çok satırlı formül içeren çıktılar (MAT.9.2.1, MAT.10.2.2, MAT.10.2.3,
+  MAT.11.1.3, MAT.11.1.5). Kullanmadan önce ders kitabıyla doğrulayın.
+  (Önceki sürümlerde bu sayı 47'ydi; ayrıştırıcı `f(x)`, `(cc)`, `(sav)` gibi
+  parantezli ifadeleri süreç bileşeni listesi sanıp kesiyordu, düzeltildi.)
 - **`curriculum.ts`'te Fen Bilimleri kodları eksik derinlikte.** Dört parçalı
   (`FB.5.1.2`) derlenmiş; gerçek Fen kodu beş parçalı (`FB.5.1.2.2`), çünkü Fen'de
   ünite altında ayrıca *konu (içerik çerçevesi)* seviyesi var. Aynı konunun birden
