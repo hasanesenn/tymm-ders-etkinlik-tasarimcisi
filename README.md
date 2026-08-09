@@ -74,10 +74,6 @@ işaretler.
 - **5 Matematik kaydı yarım kalmış** (MAT.9.2.1, MAT.10.2.2, MAT.10.2.3,
   MAT.11.1.3, MAT.11.1.5) — uzun, çok satırlı formül içeren çıktılar.
   Kullanmadan önce ders kitabıyla doğrulayın. (v1.3.0'dan önce bu sayı 47'ydi.)
-- 47 kayıt PDF ayrıştırma sırasında parantez içinde kesik kalmış (Din Kültürü
-  ve Ahlak Bilgisi 19, Matematik 8, Ortaokul Matematik 8, Türk Dili ve
-  Edebiyatı 7, Fizik 2, Biyoloji/İlkokul Matematik/Kimya 1'er) — tam liste
-  `references/curriculum.ts` başındaki notta; kullanmadan önce doğrulayın.
 - **`curriculum.ts`'te Fen Bilimleri kodları eksik derinlikte** — dört parçalı
   (`FB.5.1.2`) derlenmiş, gerçek Fen kodu beş parçalı (`FB.5.1.2.2`); aynı konunun
   birden çok çıktısı tek kayda inmiş (5. sınıf Fen: 18 yerine 28 çıktı olmalı).
@@ -88,7 +84,8 @@ işaretler.
   kullanıyor.
 - **Ünite adları hiçbir dosyada yok** (ünite yalnızca numara). Yıllık plan için
   akademik takvim ve haftalık ders saati de veride yok.
-- Veri kaynağı 2026-08-05 tarihli bir anlık görüntüdür.
+- Veri kaynağı anlık görüntüdür: kazanımlar 2026-08-09, beceri/değer listeleri
+  ve süreç bileşenleri 2026-08-05 tarihinde derlendi.
 
 ## Katkı / güncelleme
 
