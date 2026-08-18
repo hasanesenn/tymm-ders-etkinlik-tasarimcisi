@@ -84,7 +84,10 @@ işaretler.
   kullanıyor.
 - **Ünite adları hiçbir dosyada yok** (ünite yalnızca numara). Yıllık plan için
   akademik takvim ve haftalık ders saati de veride yok.
-- Veri kaynağı anlık görüntüdür: kazanımlar 2026-08-09, beceri/değer listeleri
+- **~15 kayıt "-abilme" kalıbıyla bitmiyor.** Bir kısmı gerçek (Türk Dili ve
+  Edebiyatı programı bu kalıbı kullanmaz), bir kısmı ayrıştırma artığı
+  (TG.4.1.2, HB.1.6.1, MAT.10.2.4, KİM.10.1.1 gibi). Doğrulayarak kullanın.
+- Veri kaynağı anlık görüntüdür: kazanımlar 2026-08-18, beceri/değer listeleri
   ve süreç bileşenleri 2026-08-05 tarihinde derlendi.
 
 ## Katkı / güncelleme

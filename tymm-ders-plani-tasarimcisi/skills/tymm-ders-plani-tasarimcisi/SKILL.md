@@ -4,7 +4,7 @@ description: Türkiye Yüzyılı Maarif Modeli (TYMM) kazanımlarına dayalı ik
 license: Proprietary — TeacherX
 metadata:
   author: Hasan Esen / TeacherX
-  version: "1.3"
+  version: "1.3.1"
   language: tr
   domain: egitim, mufredat-tasarimi, farklilastirma
 ---
@@ -242,6 +242,11 @@ Türkçe, sade, doğrudan uygulanabilir. MEB'in resmi/bürokratik dilini taklit 
   MAT.11.1.3, MAT.11.1.5). Kullanmadan önce ders kitabıyla doğrulayın.
   (Önceki sürümlerde bu sayı 47'ydi; ayrıştırıcı `f(x)`, `(cc)`, `(sav)` gibi
   parantezli ifadeleri süreç bileşeni listesi sanıp kesiyordu, düzeltildi.)
+- **~15 kayıt "-abilme" kalıbıyla bitmiyor.** Bir kısmı gerçek: Türk Dili ve
+  Edebiyatı programı bu kalıbı hiç kullanmaz, çıktıları betimleyici cümlelerdir.
+  Bir kısmı ise ayrıştırma artığı (ör. TG.4.1.2, HB.1.6.1, MAT.10.2.4, ve
+  KİM.10.1.1/TT.7.3.1'de "yapa bilme" gibi satır sonunda bölünmüş kelimeler).
+  Bu kodları kullanmadan önce öğretim programından doğrulayın.
 - **`curriculum.ts`'te Fen Bilimleri kodları eksik derinlikte.** Dört parçalı
   (`FB.5.1.2`) derlenmiş; gerçek Fen kodu beş parçalı (`FB.5.1.2.2`), çünkü Fen'de
   ünite altında ayrıca *konu (içerik çerçevesi)* seviyesi var. Aynı konunun birden

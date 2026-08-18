@@ -1,24 +1,35 @@
 // OTOMATİK ÜRETİLDİ — elle düzenleme. Kaynak: https://tymm.meb.gov.tr
 // scripts/scrape-curriculum.mjs ile yeniden üretilir.
-// Üretim: 2026-08-09 | 24 ders, 1792 öğrenme çıktısı
+// Üretim: 2026-08-18 | 24 ders, 1792 öğrenme çıktısı
+
 //
-// 2026-08-09 AYRIŞTIRICI DÜZELTMESİ — bir kullanıcı geri bildirimi üzerine:
-//   Süreç bileşeni listesini ("a) b) c)") kesen ifade, metnin içindeki
-//   parantezli yapıları da kesiyordu — "f(x) = " ifadesindeki "x) ",
-//   "(cc)" ve "(sav)" kısaltmalarındaki "c) " / "v) " gibi. 47 öğrenme
-//   çıktısı yarım kalmıştı ("Gerçek sayılarda f(", "Allah'ın (c").
-//   İşaretin önünde boşluk şartı eklendi; 70 kayıt düzeldi.
-//   Aynı turda: başlık artığı temizliği ("BİLEŞENLERİ") bileşen listesi
-//   kesildikten sonraya alındı, uygulama notlarını öğrenme çıktısı sanan
-//   9 kayıt düşürüldü, çapraz referans listeleri (MÜZ.1.2.1) elendi.
-//   Bu düzeltmelerle önceki iki elle müdahale (GS.6.3.1, TT.8.3.2) gereksiz
-//   kaldı — artık ayrıştırıcı ikisini de doğru üretiyor.
+// AYRIŞTIRICI DÜZELTMELERİ
 //
-// BİLİNEN AÇIK SORUN:
-//   5 Matematik kaydı hâlâ yarım: uzun, çok satırlı formül içeren çıktılar
-//   (MAT.9.2.1, MAT.10.2.2, MAT.10.2.3, MAT.11.1.3, MAT.11.1.5). Metin
-//   birleştirme sınırına takılıyorlar. Kullanmadan önce ders kitabıyla
-//   doğrulayın.
+// 2026-08-09 — parantezli ifadeler kesiliyordu:
+//   Süreç bileşeni listesini ("a) b) c)") ayıran ifade, işaretin önünde boşluk
+//   aramadığı için metnin içindeki parantezli yapıları da kesiyordu:
+//   "Gerçek sayılarda f(x) = " → "Gerçek sayılarda f(", "Allah'ın (cc)" →
+//   "Allah'ın (c". 47 çıktı yarımdı, 70 kayıt düzeldi. Aynı turda: "BİLEŞENLERİ"
+//   başlık artığı temizliğinin sırası düzeltildi (GS.6.3.1), çapraz referans
+//   listeleri elendi (MÜZ.1.2.1), tek adayı uygulama notu olan 9 kayıt düştü.
+//
+// 2026-08-18 — Türkçe kayıtları:
+//   Türkçe'de bir çıktı birden çok sınıf için ortak tanımlanıyor
+//   ("T.D.5.24. / T.D.6.24. / T.D.7.26. / T.D.8.26. <metin>") ve iki sütunlu
+//   tablolarda kod metnin SAĞINDA duruyor. Ortak satırdan yalnız ilk kod
+//   alınıyor, tablo satırından da "T.D.6.4. T.D.7.4. T.D.8.4. larının anlamını
+//   tahmin edebilme" gibi kısa ama sahte adaylar üretiliyordu; en kısa aday
+//   seçildiği için bunlar kazanıyordu. 5 kayıt düzeltildi (T.D.5.4, T.D.5.13,
+//   T.D.5.15, T.D.5.25, T.D.7.26). Kod sayıları kaynakla birebir:
+//   1-4. sınıf 4/5/5/5, 5-8. sınıf 25/25/27/27.
+//
+// BİLİNEN AÇIK SORUNLAR:
+//   - 5 Matematik kaydı yarım: uzun, çok satırlı formül içeren çıktılar
+//     (MAT.9.2.1, MAT.10.2.2, MAT.10.2.3, MAT.11.1.3, MAT.11.1.5).
+//   - ~15 kayıt "-abilme" ile bitmiyor; bir kısmı gerçek (Türk Dili ve
+//     Edebiyatı programı bu kalıbı hiç kullanmıyor), bir kısmı ayrıştırma
+//     artığı (ör. TG.4.1.2, HB.1.6.1, MAT.10.2.4, KİM.10.1.1'de "yapa bilme"
+//     gibi bölünmüş kelimeler). Bu kodları kullanmadan önce doğrulayın.
 
 export interface Kazanim {
   kod: string // örn. "TAR.9.1.1" → DERS.SINIF.ÜNİTE.ÇIKTI
@@ -1511,7 +1522,7 @@ export const CURRICULUM: Record<string, Kazanim[]> = {
     { kod: "T.D.5.1", sinif: 5, unite: 1, no: 1, cikti: "Dinlemede/izlemede materyal seçimini yönetebilme" },
     { kod: "T.D.5.2", sinif: 5, unite: 1, no: 2, cikti: "Dinlemede/izlemede strateji ve yöntem seçimlerini yönetebilme" },
     { kod: "T.D.5.3", sinif: 5, unite: 1, no: 3, cikti: "Dinleyeceğinin/izleyeceğinin içeriğine yönelik tahminde bulunabilme" },
-    { kod: "T.D.5.4", sinif: 5, unite: 1, no: 4, cikti: "T.D.6.4. T.D.7.4. T.D.8.4. larının anlamını tahmin edebilme" },
+    { kod: "T.D.5.4", sinif: 5, unite: 1, no: 4, cikti: "Dinlediğinde/izlediğinde geçen anlamını bilmediği söz varlığı unsurlarının anlamını tahmin edebilme" },
     { kod: "T.D.5.5", sinif: 5, unite: 1, no: 5, cikti: "Dinlediğinin/izlediğinin yüzey anlamını belirleyebilme" },
     { kod: "T.D.5.6", sinif: 5, unite: 1, no: 6, cikti: "Görselle iletilen anlamı belirleyebilme" },
     { kod: "T.D.5.7", sinif: 5, unite: 1, no: 7, cikti: "Dinlediğinin/izlediğinin derin anlamını belirlemeye yönelik basit çıkarımlar yapabilme" },
@@ -1520,9 +1531,9 @@ export const CURRICULUM: Record<string, Kazanim[]> = {
     { kod: "T.D.5.10", sinif: 5, unite: 1, no: 10, cikti: "Dinledikleri/izledikleri arasında karşılaştırma yapabilme" },
     { kod: "T.D.5.11", sinif: 5, unite: 1, no: 11, cikti: "Dinlediğindeki/izlediğindeki unsurları sınıflandırabilme" },
     { kod: "T.D.5.12", sinif: 5, unite: 1, no: 12, cikti: "Dinlediğini/izlediğini yorumlayabilme" },
-    { kod: "T.D.5.13", sinif: 5, unite: 1, no: 13, cikti: "T.D.6.13. T.D.7.13. T.D.8.13. leme yapabilme" },
+    { kod: "T.D.5.13", sinif: 5, unite: 1, no: 13, cikti: "Öyküleyici metinlerdeki hikâye unsurlarını belirlemeye yönelik çözümleme yapabilme" },
     { kod: "T.D.5.14", sinif: 5, unite: 1, no: 14, cikti: "Bilgilendirici metinlerde metin yapılarından hareketle önemli bilgileri belirlemeye yönelik çözümleme yapabilme" },
-    { kod: "T.D.5.15", sinif: 5, unite: 1, no: 15, cikti: "T.D.6.15. T.D.7.15. T.D.8.15. me yapabilme" },
+    { kod: "T.D.5.15", sinif: 5, unite: 1, no: 15, cikti: "Bilgilendirici metinde anahtar kelimeleri belirlemeye yönelik çözümleme yapabilme" },
     { kod: "T.D.5.16", sinif: 5, unite: 1, no: 16, cikti: "Metnin bölümlerini belirlemeye yönelik çözümleme yapabilme" },
     { kod: "T.D.5.17", sinif: 5, unite: 1, no: 17, cikti: "Bilgilendirici metinde düşünceyi geliştirme yollarını belirlemeye yönelik çözümleme yapabilme" },
     { kod: "T.D.5.18", sinif: 5, unite: 1, no: 18, cikti: "Dinlediğindeki/izlediğindeki söz sanatlarını belirlemeye yönelik çözümleme yapabilme" },
@@ -1532,7 +1543,7 @@ export const CURRICULUM: Record<string, Kazanim[]> = {
     { kod: "T.D.5.22", sinif: 5, unite: 1, no: 22, cikti: "Dinlediğini/izlediğini değerlendirebilme" },
     { kod: "T.D.5.23", sinif: 5, unite: 1, no: 23, cikti: "Dinlediğini/izlediğini eleştirebilme" },
     { kod: "T.D.5.24", sinif: 5, unite: 1, no: 24, cikti: "Dinlediğindeki/izlediğindeki probleme çözüm üretebilme" },
-    { kod: "T.D.5.25", sinif: 5, unite: 1, no: 25, cikti: "T.D.6.25. T.D.7.27. T.D.8.27. layabilme" },
+    { kod: "T.D.5.25", sinif: 5, unite: 1, no: 25, cikti: "Dinleme/izleme sürecine yönelik öz yansıtma yapabilme/kendine uyarlayabilme" },
     { kod: "T.D.6.1", sinif: 6, unite: 1, no: 1, cikti: "Dinlemede/izlemede materyal seçimini yönetebilme" },
     { kod: "T.D.6.2", sinif: 6, unite: 1, no: 2, cikti: "Dinlemede/izlemede strateji ve yöntem seçimlerini yönetebilme" },
     { kod: "T.D.6.3", sinif: 6, unite: 1, no: 3, cikti: "Dinleyeceğinin/izleyeceğinin içeriğine yönelik tahminde bulunabilme" },
@@ -1557,7 +1568,7 @@ export const CURRICULUM: Record<string, Kazanim[]> = {
     { kod: "T.D.6.22", sinif: 6, unite: 1, no: 22, cikti: "Dinlediğini/izlediğini değerlendirebilme" },
     { kod: "T.D.6.23", sinif: 6, unite: 1, no: 23, cikti: "Dinlediğini/izlediğini eleştirebilme" },
     { kod: "T.D.6.24", sinif: 6, unite: 1, no: 24, cikti: "Dinlediğindeki/izlediğindeki probleme çözüm üretebilme" },
-    { kod: "T.D.6.25", sinif: 6, unite: 1, no: 25, cikti: "Dinleme/izleme sürecine yönelik öz yansıtma yapabilme/kendini uyarlayabilme" },
+    { kod: "T.D.6.25", sinif: 6, unite: 1, no: 25, cikti: "Dinleme/izleme sürecine yönelik öz yansıtma yapabilme/kendine uyarlayabilme" },
     { kod: "T.D.7.1", sinif: 7, unite: 1, no: 1, cikti: "Dinlemede/izlemede materyal seçimini yönetebilme" },
     { kod: "T.D.7.2", sinif: 7, unite: 1, no: 2, cikti: "Dinlemede/izlemede strateji ve yöntem seçimlerini yönetebilme" },
     { kod: "T.D.7.3", sinif: 7, unite: 1, no: 3, cikti: "Dinleyeceğinin/izleyeceğinin içeriğine yönelik tahminde bulunabilme" },
@@ -1583,8 +1594,8 @@ export const CURRICULUM: Record<string, Kazanim[]> = {
     { kod: "T.D.7.23", sinif: 7, unite: 1, no: 23, cikti: "Dinlediğini/izlediğini değerlendirebilme" },
     { kod: "T.D.7.24", sinif: 7, unite: 1, no: 24, cikti: "Medya içeriğini değerlendirebilme" },
     { kod: "T.D.7.25", sinif: 7, unite: 1, no: 25, cikti: "Dinlediğini/izlediğini eleştirebilme" },
-    { kod: "T.D.7.26", sinif: 7, unite: 1, no: 26, cikti: ") böylece öğrencilerin kültürel mirasın korunması konusunda duyarlılıklarının artırılması (D7.2, D14.2, D15.4, D19.1, D19.2) ve kültür okuryazarlığı kazanmaları (OB5.2) sağlanır." },
-    { kod: "T.D.7.27", sinif: 7, unite: 1, no: 27, cikti: "Dinleme/izleme sürecine yönelik öz yansıtma yapabilme/kendini uyarlayabilme" },
+    { kod: "T.D.7.26", sinif: 7, unite: 1, no: 26, cikti: "Dinlediğindeki/izlediğindeki probleme çözüm üretebilme" },
+    { kod: "T.D.7.27", sinif: 7, unite: 1, no: 27, cikti: "Dinleme/izleme sürecine yönelik öz yansıtma yapabilme/kendine uyarlayabilme" },
     { kod: "T.D.8.1", sinif: 8, unite: 1, no: 1, cikti: "Dinlemede/izlemede materyal seçimini yönetebilme" },
     { kod: "T.D.8.2", sinif: 8, unite: 1, no: 2, cikti: "Dinlemede/izlemede strateji ve yöntem seçimlerini yönetebilme" },
     { kod: "T.D.8.3", sinif: 8, unite: 1, no: 3, cikti: "Dinleyeceğinin/izleyeceğinin içeriğine yönelik tahminde bulunabilme" },
@@ -1611,7 +1622,7 @@ export const CURRICULUM: Record<string, Kazanim[]> = {
     { kod: "T.D.8.24", sinif: 8, unite: 1, no: 24, cikti: "Medya içeriğini değerlendirebilme" },
     { kod: "T.D.8.25", sinif: 8, unite: 1, no: 25, cikti: "Dinlediğini/izlediğini eleştirebilme" },
     { kod: "T.D.8.26", sinif: 8, unite: 1, no: 26, cikti: "Dinlediğindeki/izlediğindeki probleme çözüm üretebilme" },
-    { kod: "T.D.8.27", sinif: 8, unite: 1, no: 27, cikti: "Dinleme/izleme sürecine yönelik öz yansıtma yapabilme/kendini uyarlayabilme" },
+    { kod: "T.D.8.27", sinif: 8, unite: 1, no: 27, cikti: "Dinleme/izleme sürecine yönelik öz yansıtma yapabilme/kendine uyarlayabilme" },
   ],
   "Sosyal Bilgiler": [
     { kod: "SB.4.1.1", sinif: 4, unite: 1, no: 1, cikti: "Sosyal bilgiler dersinin hayatına sunacağı katkıları yorumlayabilme" },

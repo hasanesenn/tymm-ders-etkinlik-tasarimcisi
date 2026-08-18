@@ -203,7 +203,51 @@ function parseOutcomes(text) {
   const lines = text.split(/\r?\n/)
   const raw = [] // { prefix, sinif, unite, no, cikti }
 
+  // Türkçe programında bir öğrenme çıktısı birden çok sınıf için ORTAK tanımlanır:
+  //   "T.D.5.24. / T.D.6.24. / T.D.7.26. / T.D.8.26. Dinlediğindeki ... üretebilme"
+  // matchCode tek eşleşme döndürdüğü için yalnız ilk kod (T.D.5.24) kayıt alıyor,
+  // kalan sınıflar bu satırdan hiç beslenmiyordu. Satırdaki her kodu ayrı kayda aç.
+  const ORTAK_TD =
+    /^\s*((?:T\.D\.\d{1,2}\.\d{1,2}\.?\s*\/\s*)+T\.D\.\d{1,2}\.\d{1,2}\.?)\s+(\S.*)$/
+
   for (let i = 0; i < lines.length; i++) {
+    const ortak = lines[i].match(ORTAK_TD)
+    if (ortak) {
+      const kodlar = ortak[1].match(/T\.D\.\d{1,2}\.\d{1,2}/g) || []
+      let metin = ortak[2].trim()
+      let k = i + 1
+      // Satır zaten tam bir çıktıyla bitiyorsa devam etme; sonrasında çıktının
+      // kendisi değil, açıklama paragrafı geliyor.
+      const tamam = () => /(abilme|ebilme)\.?$/i.test(metin)
+      while (
+        k < lines.length &&
+        !tamam() &&
+        metin.length < 320 &&
+        !isCodeLine(lines[k]) &&
+        lines[k].trim().length > 0 &&
+        !/^[\sA-ZÇĞİÖŞÜ.•]+$/.test(lines[k].trim())
+      ) {
+        const cont = lines[k].trim()
+        if (metin.endsWith("-")) metin = metin.slice(0, -1) + cont
+        else metin += " " + cont
+        if (cont.match(/[.:]$/) || cont.length < 40) break
+        k++
+      }
+      const temiz = cleanCikti(metin)
+      for (const kod of kodlar) {
+        const [, sinif, no] = kod.match(/T\.D\.(\d{1,2})\.(\d{1,2})/)
+        raw.push({
+          prefix: "T.D.",
+          kod,
+          sinif: Number(sinif),
+          unite: 1,
+          no: Number(no),
+          cikti: temiz,
+        })
+      }
+      continue
+    }
+
     const c = matchCode(lines[i])
     if (!c) continue
     let desc = c.desc.trim()
@@ -267,7 +311,14 @@ function parseOutcomes(text) {
   // Bunlar öğrenme çıktısı değil. Noktalama ile başlayan ya da içinde başka
   // çıktı kodu barındıran adayları ele.
   const isCaprazReferans = (t) =>
-    /^[;,.)\s]/.test(t) || /[A-ZÇĞİÖŞÜ]{2,5}\.\d+\.\d+\.\d+/.test(t)
+    /^[;,.)\s]/.test(t) ||
+    /[A-ZÇĞİÖŞÜ]{2,5}\.\d+\.\d+\.\d+/.test(t) ||
+    // Türkçe/Türk Dili kodları da metnin içinde kalabiliyor. İki sütunlu
+    // tablolarda kod metnin SAĞINDA durduğu için "T.D.6.4. T.D.7.4. T.D.8.4.
+    // larının anlamını tahmin edebilme" gibi kısa ama sahte adaylar oluşuyordu
+    // ve pickBest en kısayı seçtiği için bunlar kazanıyordu.
+    /T\.D\.\d+\.\d+/.test(t) ||
+    /TDE\d\.\d+\.\d+/.test(t)
 
   // Türk Dili (TDE) çıktıları "-abilme" ile bitmez, betimleyici cümlelerdir;
   // aynı kodun en uzun (en tam) hâlini seç. Diğer dersler "-abilme" + kısa.
