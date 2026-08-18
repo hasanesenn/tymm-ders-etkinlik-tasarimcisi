@@ -68,25 +68,14 @@ işaretler.
 
 ## Bilinen sınırlar
 
-- Kazanım verisi (`references/curriculum.ts`) 24 ders, 1792 öğrenme çıktısı
+- Kazanım verisi (`references/curriculum.ts`) 24 ders, 1788 öğrenme çıktısı
   kapsıyor. **İngilizce ve diğer dil dersleri, Alan Becerileri, Fiziksel
   Beceriler** kapsam dışı — bkz. dosyaların başındaki notlar.
-- **5 Matematik kaydı yarım kalmış** (MAT.9.2.1, MAT.10.2.2, MAT.10.2.3,
-  MAT.11.1.3, MAT.11.1.5) — uzun, çok satırlı formül içeren çıktılar.
-  Kullanmadan önce ders kitabıyla doğrulayın. (v1.3.0'dan önce bu sayı 47'ydi.)
-- **`curriculum.ts`'te Fen Bilimleri kodları eksik derinlikte** — dört parçalı
-  (`FB.5.1.2`) derlenmiş, gerçek Fen kodu beş parçalı (`FB.5.1.2.2`); aynı konunun
-  birden çok çıktısı tek kayda inmiş (5. sınıf Fen: 18 yerine 28 çıktı olmalı).
-  `surec-bilesenleri.mjs` doğru kodları taşıyor ve skill Fen'de onu kullanıyor,
-  ama `curriculum.ts` henüz düzeltilmedi.
-- **Türkçe, Türk Dili ve Edebiyatı ve İngilizce'de süreç bileşeni yok** — bu
-  programlar `a) b) c)` yapısı yerine "Öğrenme Yaşantısı" paragrafı / CEFR yapısı
-  kullanıyor.
-- **Ünite adları hiçbir dosyada yok** (ünite yalnızca numara). Yıllık plan için
-  akademik takvim ve haftalık ders saati de veride yok.
-- **~15 kayıt "-abilme" kalıbıyla bitmiyor.** Bir kısmı gerçek (Türk Dili ve
-  Edebiyatı programı bu kalıbı kullanmaz), bir kısmı ayrıştırma artığı
-  (TG.4.1.2, HB.1.6.1, MAT.10.2.4, KİM.10.1.1 gibi). Doğrulayarak kullanın.
+- **Tek bozuk kayıt kaldı: TG.4.1.2.** Kaynak PDF sayfasında sütunlar iç içe
+  geçtiği için metin paramparça çıkıyor. Bu kodu öğretim programından
+  doğrulayın. (v1.3.0 öncesinde yarım kayıt sayısı 47'ydi.)
+- Türk Dili ve Edebiyatı çıktıları `-abilme` kalıbıyla bitmez; o program
+  betimleyici cümleler kullanır. Bu bir hata değil, programın yapısı.
 - Veri kaynağı anlık görüntüdür: kazanımlar 2026-08-18, beceri/değer listeleri
   ve süreç bileşenleri 2026-08-05 tarihinde derlendi.
 

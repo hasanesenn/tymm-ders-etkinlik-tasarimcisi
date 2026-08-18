@@ -4,7 +4,7 @@ description: Türkiye Yüzyılı Maarif Modeli (TYMM) kazanımlarına dayalı ik
 license: Proprietary — TeacherX
 metadata:
   author: Hasan Esen / TeacherX
-  version: "1.3.1"
+  version: "1.3.2"
   language: tr
   domain: egitim, mufredat-tasarimi, farklilastirma
 ---
@@ -60,7 +60,7 @@ Bu skill'in yanında gerçek, deterministik olarak tymm.meb.gov.tr'den derlenmi�
 veri kaynağı var (ezbere/halüsinasyon değil):
 
 - `references/curriculum.ts` (+ çalıştırılabilir hâli `references/data.mjs`) — 24 ders,
-  1792 öğrenme çıktısı, kod + sınıf + ünite + metin
+  1788 öğrenme çıktısı, kod + sınıf + ünite + metin
 - `references/skills.ts` (+ `data.mjs`) — Erdem-Değer-Eylem Çerçevesi (20 değer),
   Kavramsal Beceriler, Eğilimler, Sosyal-Duygusal Öğrenme Becerileri, Okuryazarlık
   Becerileri (kod + ad + varsa tanım)
@@ -237,16 +237,13 @@ Türkçe, sade, doğrudan uygulanabilir. MEB'in resmi/bürokratik dilini taklit 
 - Veri kaynağının kapsamadığı alanlar: İngilizce ve diğer dil dersleri (CEFR tabanlı
   farklı bir yapı kullanıyor), Alan Becerileri (tek sayfa değil, her ders ailesi için
   ayrı bir kaynak — henüz derlenmedi), Fiziksel Beceriler (kaynakta ayrı kod listesi yok).
-- `references/curriculum.ts`'te **5 Matematik kaydı** hâlâ yarım kalmış: uzun,
-  çok satırlı formül içeren çıktılar (MAT.9.2.1, MAT.10.2.2, MAT.10.2.3,
-  MAT.11.1.3, MAT.11.1.5). Kullanmadan önce ders kitabıyla doğrulayın.
-  (Önceki sürümlerde bu sayı 47'ydi; ayrıştırıcı `f(x)`, `(cc)`, `(sav)` gibi
-  parantezli ifadeleri süreç bileşeni listesi sanıp kesiyordu, düzeltildi.)
-- **~15 kayıt "-abilme" kalıbıyla bitmiyor.** Bir kısmı gerçek: Türk Dili ve
-  Edebiyatı programı bu kalıbı hiç kullanmaz, çıktıları betimleyici cümlelerdir.
-  Bir kısmı ise ayrıştırma artığı (ör. TG.4.1.2, HB.1.6.1, MAT.10.2.4, ve
-  KİM.10.1.1/TT.7.3.1'de "yapa bilme" gibi satır sonunda bölünmüş kelimeler).
-  Bu kodları kullanmadan önce öğretim programından doğrulayın.
+- `references/curriculum.ts`'te **tek bozuk kayıt kaldı: TG.4.1.2.** Kaynak
+  sayfada sütunlar iç içe geçtiği için metin paramparça çıkıyor ("Trafik ile
+  ilgili temel kurallarının kavramlara"). Bu kodu kullanma, öğretmene öğretim
+  programından doğrulamasını söyle.
+- **Türk Dili ve Edebiyatı çıktıları `-abilme` ile bitmez** — o program
+  betimleyici cümleler kullanır ("Seçim yapar."). Bu bir ayrıştırma hatası
+  değil, programın kendi yapısı.
 - **`curriculum.ts`'te Fen Bilimleri kodları eksik derinlikte.** Dört parçalı
   (`FB.5.1.2`) derlenmiş; gerçek Fen kodu beş parçalı (`FB.5.1.2.2`), çünkü Fen'de
   ünite altında ayrıca *konu (içerik çerçevesi)* seviyesi var. Aynı konunun birden

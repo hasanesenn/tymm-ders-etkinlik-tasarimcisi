@@ -185,17 +185,43 @@ function matchCode(line) {
 // kalıyor ve işaretin önündeki boşluk şartı tutmadığı için bileşen listesi
 // çıktının içinde kalıyordu.
 function cleanCikti(s) {
-  return s
-    .replace(/ÖĞRENME ÇIKTILARI/g, " ")
-    .replace(/(VE\s+)?SÜREÇ BİLEŞENLER[İI]/g, " ")
-    .replace(/\s+/g, " ")
+  return kesBilesenListesi(
+    s
+      .replace(/ÖĞRENME ÇIKTILARI/g, " ")
+      .replace(/(VE\s+)?SÜREÇ BİLEŞENLER[İI]/g, " ")
+      // Sütun kırpılınca başlığın yalnız son kelimesi metnin ORTASINDA kalabiliyor
+      // ("…inceleyebilme BİLEŞENLERİ a) …betimler."). Büyük harfli hâli daima
+      // başlık artığıdır; çıktı metinlerinde küçük harfle geçer.
+      .replace(/\bBİLEŞENLER[İI]\b/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+  )
+    // "yapa bilme" → "yapabilme": satır sonunda bölünen fiil, tire düşünce
+    // boşlukla yapışık kalıyor (KİM.10.1.1, TT.7.3.1, TT.7.7.1).
+    .replace(/([a-zçğıöşü][ae])\s+(bilme(?:si)?)\b/gu, "$1$2")
+    // Çıktı bittikten sonra yeni bir cümle başlıyorsa (büyük harf) o cümle
+    // çıktının parçası değil, süreç bileşeni ya da açıklamadır.
+    .replace(/((?:abilme|ebilme))\s+(?=[A-ZÇĞİÖŞÜ])[\s\S]*$/u, "$1")
     .trim()
-    .replace(/(?:^|\s)[a-zçğıöşü]\)\s.*$/u, "")
-    // Sütun kırpılınca başlığın yalnız son kelimesi kalabiliyor:
-    //   "…inceleyebilme" + sonraki satır "BİLEŞENLERİ   a) …betimler."
-    // Bu yüzden bileşen listesi kesildikten SONRA çalışmalı, önce değil.
-    .replace(/\s*BİLEŞENLER[İI]\s*$/u, "")
-    .trim()
+}
+
+// Süreç bileşeni listesini ("a) b) c)") çıktı metninden ayırır.
+//
+// İşareti körlemesine aramak matematik gösterimini bozuyordu: "f(x ± r) ± k"
+// ifadesindeki " r) " de bir işaret gibi görünüyor ve metin oradan kesiliyordu
+// (MAT.9.2.1, MAT.10.2.2, MAT.10.2.3, MAT.11.1.3, MAT.11.1.5).
+//
+// Kural: yalnızca işaretten ÖNCEKİ metin zaten tam bir öğrenme çıktısıysa
+// ("…-abilme" ile bitiyorsa) ya da işaret en baştaysa kes. "f(x ±" tam bir
+// çıktı olmadığı için formüle dokunulmaz.
+function kesBilesenListesi(t) {
+  const re = /(?:^|\s)([a-zçğıöşü])\)(?:\s|$)/gu
+  let m
+  while ((m = re.exec(t)) !== null) {
+    const once = t.slice(0, m.index).trim()
+    if (once === "" || /(abilme|ebilme)$/i.test(once)) return once
+  }
+  return t
 }
 
 // Bir ders metninden öğrenme çıktılarını çıkar.
@@ -263,10 +289,20 @@ function parseOutcomes(text) {
       desc.length < 480 &&
       !isCodeLine(lines[j]) &&
       lines[j].trim().length > 0 &&
+      // satır bir süreç bileşeni işaretiyle başlıyorsa çıktı bitmiştir
+      !/^\s*[a-zçğıöşü]\)\s/u.test(lines[j]) &&
       // büyük harfli başlık satırlarını alma
       !/^[\sA-ZÇĞİÖŞÜ.•]+$/.test(lines[j].trim())
     ) {
       const cont = lines[j].trim()
+      // Kesir ve üs gösterimi metne tek karakterlik satır olarak düşüyor:
+      // "…rasyonel referans fonksiyo-" / "x" / "nun nitel özellikleri…"
+      // Yalnız TEK karakter: "me", "nun" gibi hece devamları korunmalı.
+      // ("1/x" ifadesinin paydası). Birleştirilirse "fonksiyox" oluyordu.
+      if (cont.length <= 1) {
+        j++
+        continue
+      }
       if (desc.endsWith("-")) desc = desc.slice(0, -1) + cont
       else desc += " " + cont
       if (cont.match(/[.:]$/) || cont.length < 40) break
@@ -305,7 +341,8 @@ function parseOutcomes(text) {
 
   const isOutcome = (t) => /(abilme|ebilme|abilmesi|ebilmesi)\.?$/i.test(t)
   const isUygulama = (t) =>
-    /^(Öğrenci|Öğretmen|Verilen|Grup|Bu\b|Konu\b|Öğrenme)/i.test(t)
+    /^(Öğrenci|Öğretmen|Verilen|Grup|Bu\b|Konu\b|Öğrenme|Uygulamaları|Sınıfa|Yazılı)/i.test(t) ||
+    /^[.,;)]/.test(t)
   // Uygulama notlarının sonundaki çapraz referans listeleri de aynı kodu taşır:
   //   "...sergilemeleri istenir. (MÜZ.1.2.1; MÜZ.1.2.3; MÜZ.1.2.4)"
   // Bunlar öğrenme çıktısı değil. Noktalama ile başlayan ya da içinde başka
@@ -318,7 +355,11 @@ function parseOutcomes(text) {
     // larının anlamını tahmin edebilme" gibi kısa ama sahte adaylar oluşuyordu
     // ve pickBest en kısayı seçtiği için bunlar kazanıyordu.
     /T\.D\.\d+\.\d+/.test(t) ||
-    /TDE\d\.\d+\.\d+/.test(t)
+    /TDE\d\.\d+\.\d+/.test(t) ||
+    // Sütunları iç içe geçmiş sayfalarda metin paramparça çıkıyor ve bileşen
+    // işareti kelimeye yapışıyor ("a)Trafik Trafikişaret levhalarını").
+    // Bu adaylar kurtarılabilir değil.
+    /(?:^|\s)[a-zçğıöşü]\)\S/u.test(t)
 
   // Türk Dili (TDE) çıktıları "-abilme" ile bitmez, betimleyici cümlelerdir;
   // aynı kodun en uzun (en tam) hâlini seç. Diğer dersler "-abilme" + kısa.
