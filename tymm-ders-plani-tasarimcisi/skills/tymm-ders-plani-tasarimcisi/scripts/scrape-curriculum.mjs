@@ -122,8 +122,13 @@ const CODE_RE = /\b([A-ZÇĞİÖŞÜ]{2,5})\.(\d{1,2})\.(\d{1,2})\.(\d{1,2})\.?\
 // Türk Dili: sınıf prefix'e bitişik, 3 parça (TDE1.2.3 → 9. sınıf, 2.tema, 3)
 const TDE_RE = /\b(TDE)(\d)\.(\d{1,2})\.(\d{1,2})\.?\s*(.*)$/
 const TDE_SINIF = { 1: 9, 2: 10, 3: 11, 4: 12 }
-// İlkokul/Ortaokul Türkçe: T.D.SINIF.NO (T.D.1.2 → 1.sınıf 2.çıktı, T.D.5.1 → 5.sınıf)
-const TURKCE_RE = /\bT\.D\.(\d{1,2})\.(\d{1,2})\.?\s*(.*)$/
+// İlkokul/Ortaokul Türkçe: T.<ALAN>.SINIF.NO
+// Dört öğrenme alanı, dört ayrı kod öneki:
+//   T.D = Dinleme/İzleme, T.O = Okuma, T.K = Konuşma, T.Y = Yazma
+// (Eskiden yalnız T.D taranıyordu; Okuma/Konuşma/Yazma çıktıları hiç
+//  derlenmiyordu — ortaokulda 302, ilkokulda 58 kazanım eksikti.)
+const TURKCE_RE = /\bT\.([DOKY])\.(\d{1,2})\.(\d{1,2})\.?\s*(.*)$/
+const TURKCE_ALAN_UNITE = { D: 1, O: 2, K: 3, Y: 4 }
 
 const isCodeLine = (l) => CODE_RE.test(l) || TDE_RE.test(l) || TURKCE_RE.test(l)
 
@@ -155,12 +160,14 @@ function matchCode(line) {
   const td = line.match(TURKCE_RE)
   if (td) {
     return {
-      prefix: "T.D.",
-      kod: `T.D.${td[1]}.${td[2]}`, // literal: T.D.5.1
-      sinif: Number(td[1]),
-      unite: 1,
-      no: Number(td[2]),
-      desc: td[3] || "",
+      // Dört alanın tek prefix altında toplanması önemli: prefix sıklık
+      // filtresi alanları birbirinden ayırıp elemesin.
+      prefix: "T.",
+      kod: `T.${td[1]}.${td[2]}.${td[3]}`, // literal: T.O.5.1
+      sinif: Number(td[2]),
+      unite: TURKCE_ALAN_UNITE[td[1]] ?? 1,
+      no: Number(td[3]),
+      desc: td[4] || "",
     }
   }
   return null
@@ -234,12 +241,12 @@ function parseOutcomes(text) {
   // matchCode tek eşleşme döndürdüğü için yalnız ilk kod (T.D.5.24) kayıt alıyor,
   // kalan sınıflar bu satırdan hiç beslenmiyordu. Satırdaki her kodu ayrı kayda aç.
   const ORTAK_TD =
-    /^\s*((?:T\.D\.\d{1,2}\.\d{1,2}\.?\s*\/\s*)+T\.D\.\d{1,2}\.\d{1,2}\.?)\s+(\S.*)$/
+    /^\s*((?:T\.[DOKY]\.\d{1,2}\.\d{1,2}\.?\s*\/\s*)+T\.[DOKY]\.\d{1,2}\.\d{1,2}\.?)\s+(\S.*)$/
 
   for (let i = 0; i < lines.length; i++) {
     const ortak = lines[i].match(ORTAK_TD)
     if (ortak) {
-      const kodlar = ortak[1].match(/T\.D\.\d{1,2}\.\d{1,2}/g) || []
+      const kodlar = ortak[1].match(/T\.[DOKY]\.\d{1,2}\.\d{1,2}/g) || []
       let metin = ortak[2].trim()
       let k = i + 1
       // Satır zaten tam bir çıktıyla bitiyorsa devam etme; sonrasında çıktının
@@ -261,12 +268,12 @@ function parseOutcomes(text) {
       }
       const temiz = cleanCikti(metin)
       for (const kod of kodlar) {
-        const [, sinif, no] = kod.match(/T\.D\.(\d{1,2})\.(\d{1,2})/)
+        const [, alan, sinif, no] = kod.match(/T\.([DOKY])\.(\d{1,2})\.(\d{1,2})/)
         raw.push({
-          prefix: "T.D.",
+          prefix: "T.",
           kod,
           sinif: Number(sinif),
-          unite: 1,
+          unite: TURKCE_ALAN_UNITE[alan] ?? 1,
           no: Number(no),
           cikti: temiz,
         })
@@ -354,7 +361,7 @@ function parseOutcomes(text) {
     // tablolarda kod metnin SAĞINDA durduğu için "T.D.6.4. T.D.7.4. T.D.8.4.
     // larının anlamını tahmin edebilme" gibi kısa ama sahte adaylar oluşuyordu
     // ve pickBest en kısayı seçtiği için bunlar kazanıyordu.
-    /T\.D\.\d+\.\d+/.test(t) ||
+    /T\.[DOKY]\.\d+\.\d+/.test(t) ||
     /TDE\d\.\d+\.\d+/.test(t) ||
     // Sütunları iç içe geçmiş sayfalarda metin paramparça çıkıyor ve bileşen
     // işareti kelimeye yapışıyor ("a)Trafik Trafikişaret levhalarını").

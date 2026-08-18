@@ -4,7 +4,7 @@ description: Türkiye Yüzyılı Maarif Modeli (TYMM) kazanımlarına dayalı ik
 license: Proprietary — TeacherX
 metadata:
   author: Hasan Esen / TeacherX
-  version: "1.3.2"
+  version: "1.4.0"
   language: tr
   domain: egitim, mufredat-tasarimi, farklilastirma
 ---
@@ -60,7 +60,7 @@ Bu skill'in yanında gerçek, deterministik olarak tymm.meb.gov.tr'den derlenmi�
 veri kaynağı var (ezbere/halüsinasyon değil):
 
 - `references/curriculum.ts` (+ çalıştırılabilir hâli `references/data.mjs`) — 24 ders,
-  1788 öğrenme çıktısı, kod + sınıf + ünite + metin
+  2148 öğrenme çıktısı, kod + sınıf + ünite + metin
 - `references/skills.ts` (+ `data.mjs`) — Erdem-Değer-Eylem Çerçevesi (20 değer),
   Kavramsal Beceriler, Eğilimler, Sosyal-Duygusal Öğrenme Becerileri, Okuryazarlık
   Becerileri (kod + ad + varsa tanım)
@@ -241,6 +241,11 @@ Türkçe, sade, doğrudan uygulanabilir. MEB'in resmi/bürokratik dilini taklit 
   sayfada sütunlar iç içe geçtiği için metin paramparça çıkıyor ("Trafik ile
   ilgili temel kurallarının kavramlara"). Bu kodu kullanma, öğretmene öğretim
   programından doğrulamasını söyle.
+- **Türkçe dersinde kodlar öğrenme alanına göre ayrışır** ve `unite` alanı bu
+  alanı gösterir: `T.D.*` Dinleme/İzleme (1), `T.O.*` Okuma (2), `T.K.*` Konuşma
+  (3), `T.Y.*` Yazma (4). Öğretmen "Türkçe kazanımı" derken hangi alanı
+  kastettiğini belirtmediyse sor; `lookup.mjs kazanim "Ortaokul Türkçe" 5`
+  dördünü birden döndürür.
 - **Türk Dili ve Edebiyatı çıktıları `-abilme` ile bitmez** — o program
   betimleyici cümleler kullanır ("Seçim yapar."). Bu bir ayrıştırma hatası
   değil, programın kendi yapısı.

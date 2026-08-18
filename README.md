@@ -68,12 +68,15 @@ işaretler.
 
 ## Bilinen sınırlar
 
-- Kazanım verisi (`references/curriculum.ts`) 24 ders, 1788 öğrenme çıktısı
+- Kazanım verisi (`references/curriculum.ts`) 24 ders, 2148 öğrenme çıktısı
   kapsıyor. **İngilizce ve diğer dil dersleri, Alan Becerileri, Fiziksel
   Beceriler** kapsam dışı — bkz. dosyaların başındaki notlar.
 - **Tek bozuk kayıt kaldı: TG.4.1.2.** Kaynak PDF sayfasında sütunlar iç içe
   geçtiği için metin paramparça çıkıyor. Bu kodu öğretim programından
   doğrulayın. (v1.3.0 öncesinde yarım kayıt sayısı 47'ydi.)
+- Türkçe dersinde kodlar öğrenme alanına göre ayrışır: `T.D.*` Dinleme/İzleme,
+  `T.O.*` Okuma, `T.K.*` Konuşma, `T.Y.*` Yazma. (v1.4.0 öncesinde yalnız
+  Dinleme/İzleme derlenmişti; diğer üç alan eksikti.)
 - Türk Dili ve Edebiyatı çıktıları `-abilme` kalıbıyla bitmez; o program
   betimleyici cümleler kullanır. Bu bir hata değil, programın yapısı.
 - Veri kaynağı anlık görüntüdür: kazanımlar 2026-08-18, beceri/değer listeleri
