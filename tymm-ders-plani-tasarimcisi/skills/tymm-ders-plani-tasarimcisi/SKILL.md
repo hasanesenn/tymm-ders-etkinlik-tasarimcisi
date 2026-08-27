@@ -4,7 +4,7 @@ description: Türkiye Yüzyılı Maarif Modeli (TYMM) kazanımlarına dayalı ik
 license: Proprietary — TeacherX
 metadata:
   author: Hasan Esen / TeacherX
-  version: "1.5.0"
+  version: "1.5.1"
   language: tr
   domain: egitim, mufredat-tasarimi, farklilastirma
 ---
@@ -64,9 +64,11 @@ veri kaynağı var (ezbere/halüsinasyon değil):
 - `references/skills.ts` (+ `data.mjs`) — Erdem-Değer-Eylem Çerçevesi (20 değer),
   Kavramsal Beceriler, Eğilimler, Sosyal-Duygusal Öğrenme Becerileri, Okuryazarlık
   Becerileri (kod + ad + varsa tanım)
-- `references/surec-bilesenleri.mjs` — 21 ders, 1590 öğrenme çıktısı, 5385 **süreç
+- `references/surec-bilesenleri.mjs` — 21 ders, 1635 öğrenme çıktısı, 5534 **süreç
   bileşeni** (`a) b) c) ç)`), her çıktının konu/bölüm adıyla. Öğretim programı
-  PDF'lerinden derlendi.
+  PDF'lerinden derlendi. Fen kayıtları `kodDuz` de taşır, yani web sitesindeki
+  düz kodla da sorgulanabilir. Bazı programlar (ör. Hayat Bilgisi) bileşeni
+  harfle işaretlemez, tek cümle yazar; onlar `harf: "-"` ile gelir.
 - `scripts/lookup.mjs` — tüm dosyayı context'e dökmeden ilgili dilimi sorgulamak için:
   ```
   node scripts/lookup.mjs dersler                    # kayıtlı ders adları

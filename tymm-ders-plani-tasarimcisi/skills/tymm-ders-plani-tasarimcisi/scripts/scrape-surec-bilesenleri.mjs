@@ -82,6 +82,12 @@ const BOLUM = /(?:^|\s)(?:\d+\.\s*)?Bölüm:\s*(.+?)\s*$/
 const KESICI =
   /^\s*(İÇERİK ÇERÇEVESİ|Anahtar Kavramlar|ÖĞRENME\s+KANITLARI|PROGRAMLAR ARASI|Öğrenme-Öğretme|ÖĞRENME-ÖĞRETME|FARKLILAŞTIRMA|Ders Saati|ÜNİTE|TEMA)/
 
+// İki sütunlu düzende sol sütun başlığı, sağ sütunun ilk satırının önüne
+// düşüyor: "     VE SÜREÇ BİLEŞENLERİ      a) Müzik dinleme/söyleme ...".
+// Bu yüzden satır başına çapalı bileşen işareti tanınmıyordu. Etiketi at.
+const solEtiketsiz = (l) =>
+  l.replace(/^\s*(?:ÖĞRENME ÇIKTILARI|(?:VE\s+)?SÜREÇ BİLEŞENLER[İI])\s*/u, "    ")
+
 // PDF satır sonu tirelemesini geri al: "araç-\nları" → "araçları"
 const deHyphen = (acc, s) =>
   acc.endsWith("-") ? acc.slice(0, -1) + s.trimStart() : (acc ? acc + " " : "") + s.trim()
@@ -90,8 +96,11 @@ const temizle = (s) =>
   s
     .replace(/\s*(VE\s+)?SÜREÇ BİLEŞENLER[İI]\s*/g, "")
     .replace(/ÖĞRENME ÇIKTILARI\s*/g, "")
+    .replace(/\bBİLEŞENLER[İI]\b/g, " ")
     .replace(/\s+/g, " ")
     .trim()
+    // Satır sonunda bölünen fiil, tire düşünce boşlukla yapışık kalıyor
+    .replace(/([a-zçğıöşü][ae])\s+(bilme(?:si)?)\b/gu, "$1$2")
 
 function parse(text) {
   const lines = text.split(/\r?\n/)
@@ -115,11 +124,23 @@ function parse(text) {
     if (MARKER.test(cikti)) continue // "a) TDE1.1.1 ..." gibi ters düzen — bu script kapsamı dışı
     let j = i + 1
     for (; j < lines.length; j++) {
-      const l = lines[j]
+      const l = solEtiketsiz(lines[j])
       if (!l.trim() || MARKER.test(l) || CODE.test(l) || BOLUM.test(l) || KESICI.test(l)) break
+      // Kesir/üs gösterimi tek karakterlik satır olarak düşüyor ("1/x"in paydası);
+      // birleştirilirse "fonksiyox" gibi bozuk kelimeler oluşuyor.
+      if (l.trim().length <= 1) continue
       cikti = deHyphen(cikti, l)
     }
     cikti = temizle(cikti)
+    // Bazı programlar (ör. Hayat Bilgisi) süreç bileşenini a) b) c) ile
+    // işaretlemez, çıktının hemen ardına tek bir cümle olarak yazar. Çıktı
+    // "-abilme" ile bittikten sonra büyük harfle başlayan kısım bileşendir.
+    let etiketsiz = null
+    const kesim = cikti.match(/^(.*?(?:abilme|ebilme))\s+([A-ZÇĞİÖŞÜ][\s\S]*)$/u)
+    if (kesim) {
+      cikti = kesim[1]
+      etiketsiz = kesim[2].trim()
+    }
     // Kanonik öğrenme çıktısı "-abilme/-ebilme" ile biter. Aynı kod PDF'de
     // özet tabloda ve uygulama notunda da geçer; bu filtre onları eler.
     if (!/(abilme|ebilme)\.?$/i.test(cikti)) continue
@@ -128,7 +149,7 @@ function parse(text) {
     const bilesenler = []
     let cur = null
     for (; j < lines.length; j++) {
-      const l = lines[j]
+      const l = solEtiketsiz(lines[j])
       if (CODE.test(l) || BOLUM.test(l) || KESICI.test(l)) break
       const mk = l.match(MARKER)
       if (mk) {
@@ -139,6 +160,10 @@ function parse(text) {
       } else if (!l.trim() && bilesenler.length && !cur) break
     }
     if (cur) bilesenler.push(cur)
+    // İşaretli bileşen yoksa ama etiketsiz cümle yakalandıysa onu kullan.
+    if (!bilesenler.length && etiketsiz && etiketsiz.length > 15) {
+      bilesenler.push({ harf: "-", metin: etiketsiz })
+    }
 
     if (bilesenler.length) {
       for (const bs of bilesenler) bs.metin = temizle(bs.metin)
@@ -197,7 +222,32 @@ function main() {
   write(veri, atlanan)
 }
 
+// tymm.meb.gov.tr web sayfaları Fen kodlarını konu seviyesi olmadan, ünite
+// içinde düz sayar: PDF'teki FB.7.1.2.1 → sitede FB.7.1.4. curriculum.ts ile
+// aynı eşlemeyi burada da üret ki iki dosya aynı kodları taşısın.
+function duzKodEkle(liste) {
+  const gruplar = new Map()
+  for (const o of liste) {
+    const parca = o.kod.split(".")
+    if (parca.length !== 5) continue
+    o.unite = Number(parca[2])
+    o.konu = Number(parca[3])
+    o.no = Number(parca[4])
+    const anahtar = `${o.sinif}.${o.unite}`
+    if (!gruplar.has(anahtar)) gruplar.set(anahtar, [])
+    gruplar.get(anahtar).push(o)
+  }
+  for (const [, grup] of gruplar) {
+    grup.sort((a, b) => a.konu - b.konu || a.no - b.no)
+    const onek = grup[0].kod.split(".")[0]
+    grup.forEach((o, i) => {
+      o.kodDuz = `${onek}.${o.sinif}.${o.unite}.${i + 1}`
+    })
+  }
+}
+
 function write(veri, atlanan) {
+  for (const liste of Object.values(veri)) duzKodEkle(liste)
   const dersler = Object.keys(veri).sort((a, b) => a.localeCompare(b, "tr"))
   const toplam = dersler.reduce((n, d) => n + veri[d].length, 0)
   const bilesenSayisi = dersler.reduce(
@@ -230,7 +280,8 @@ export const SUREC_BILESENLERI = {
       const bs = k.bilesenler
         .map((b) => `{ harf: ${JSON.stringify(b.harf)}, metin: ${JSON.stringify(b.metin)} }`)
         .join(", ")
-      js += `    { kod: ${JSON.stringify(k.kod)}, sinif: ${k.sinif}, bolum: ${JSON.stringify(k.bolum)}, cikti: ${JSON.stringify(k.cikti)}, bilesenler: [${bs}] },\n`
+      const duz = k.kodDuz ? `kodDuz: ${JSON.stringify(k.kodDuz)}, ` : ""
+      js += `    { kod: ${JSON.stringify(k.kod)}, sinif: ${k.sinif}, ${duz}bolum: ${JSON.stringify(k.bolum)}, cikti: ${JSON.stringify(k.cikti)}, bilesenler: [${bs}] },\n`
     }
     js += `  ],\n`
   }
@@ -239,7 +290,7 @@ export const SUREC_BILESENLERI = {
 // Bir öğrenme çıktısı kodunun süreç bileşenlerini döndürür.
 export function getBilesenler(kod) {
   for (const liste of Object.values(SUREC_BILESENLERI)) {
-    const bulunan = liste.find((k) => k.kod === kod)
+    const bulunan = liste.find((k) => k.kod === kod || k.kodDuz === kod)
     if (bulunan) return bulunan
   }
   return null
