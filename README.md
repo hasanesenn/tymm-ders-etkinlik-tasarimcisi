@@ -68,18 +68,26 @@ işaretler.
 
 ## Bilinen sınırlar
 
-- Kazanım verisi (`references/curriculum.ts`) 24 ders, 2148 öğrenme çıktısı
+- Kazanım verisi (`references/curriculum.ts`) 24 ders, 2223 öğrenme çıktısı
   kapsıyor. **İngilizce ve diğer dil dersleri, Alan Becerileri, Fiziksel
   Beceriler** kapsam dışı — bkz. dosyaların başındaki notlar.
 - **Tek bozuk kayıt kaldı: TG.4.1.2.** Kaynak PDF sayfasında sütunlar iç içe
   geçtiği için metin paramparça çıkıyor. Bu kodu öğretim programından
   doğrulayın. (v1.3.0 öncesinde yarım kayıt sayısı 47'ydi.)
+- **Fen Bilimleri'nde iki kod şeması var, ikisi de resmî.** Öğretim programı
+  PDF'i ve MEB çerçeve yıllık planı beş parçalı kod kullanır (`FB.7.1.2.1`);
+  tymm.meb.gov.tr'nin ünite sayfaları konu seviyesini kaldırıp ünite içinde
+  düz sayar (aynı çıktı orada `FB.7.1.4`). Veride ikisi de tutuluyor —
+  `kod` ve `kodDuz`; hangisini yazarsanız yazın bulunur.
+  (v1.5.0 öncesinde Fen kodları hatalıydı ve çıktı kaybı vardı.)
+- **Türk Dili ve Edebiyatı verisi 2024 tarihli programdan.** MEB 19.08.2026
+  tarihli revize bir program yayımladı, bu sürümde henüz işlenmedi.
 - Türkçe dersinde kodlar öğrenme alanına göre ayrışır: `T.D.*` Dinleme/İzleme,
   `T.O.*` Okuma, `T.K.*` Konuşma, `T.Y.*` Yazma. (v1.4.0 öncesinde yalnız
   Dinleme/İzleme derlenmişti; diğer üç alan eksikti.)
 - Türk Dili ve Edebiyatı çıktıları `-abilme` kalıbıyla bitmez; o program
   betimleyici cümleler kullanır. Bu bir hata değil, programın yapısı.
-- Veri kaynağı anlık görüntüdür: kazanımlar 2026-08-18, beceri/değer listeleri
+- Veri kaynağı anlık görüntüdür: kazanımlar 2026-08-27, beceri/değer listeleri
   ve süreç bileşenleri 2026-08-05 tarihinde derlendi.
 
 ## Katkı / güncelleme
