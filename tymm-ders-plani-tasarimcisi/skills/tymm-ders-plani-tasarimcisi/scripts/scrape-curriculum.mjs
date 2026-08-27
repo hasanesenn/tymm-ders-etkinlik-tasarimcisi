@@ -15,7 +15,7 @@
 //   node scripts/scrape-curriculum.mjs ortaogretim temel-egitim
 
 import { execFileSync } from "node:child_process"
-import { mkdirSync, existsSync, writeFileSync, readFileSync } from "node:fs"
+import { mkdirSync, existsSync, writeFileSync, readFileSync, readdirSync } from "node:fs"
 import { join, dirname } from "node:path"
 import { fileURLToPath } from "node:url"
 
@@ -27,7 +27,9 @@ const OUT = outArg > -1 ? process.argv[outArg + 1] : join(ROOT, "lib", "curricul
 const BASE = "https://tymm.meb.gov.tr"
 const UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
 
-const levels = process.argv.slice(2).filter((a, i, arr) => a !== "--out" && arr[i - 1] !== "--out")
+const levels = process.argv
+  .slice(2)
+  .filter((a, i, arr) => a !== "--out" && a !== "--cache" && arr[i - 1] !== "--out")
 if (levels.length === 0) levels.push("ortaogretim")
 
 mkdirSync(CACHE, { recursive: true })
@@ -118,7 +120,10 @@ function dersAdi(slug) {
 }
 
 // Standart Maarif kodu: DERS.SINIF.ÜNİTE.ÇIKTI (örn. TAR.9.1.1)
-const CODE_RE = /\b([A-ZÇĞİÖŞÜ]{2,5})\.(\d{1,2})\.(\d{1,2})\.(\d{1,2})\.?\s*(.*)$/
+// Fen Bilimleri'nde ünite altında ayrıca KONU seviyesi var, kod beş parçalı:
+// DERS.SINIF.ÜNİTE.KONU.ÇIKTI (örn. FB.7.1.2.1). Beşinci grup opsiyonel.
+const CODE_RE =
+  /\b([A-ZÇĞİÖŞÜ]{2,5})\.(\d{1,2})\.(\d{1,2})\.(\d{1,2})(?:\.(\d{1,2}))?\.?\s*(.*)$/
 // Türk Dili: sınıf prefix'e bitişik, 3 parça (TDE1.2.3 → 9. sınıf, 2.tema, 3)
 const TDE_RE = /\b(TDE)(\d)\.(\d{1,2})\.(\d{1,2})\.?\s*(.*)$/
 const TDE_SINIF = { 1: 9, 2: 10, 3: 11, 4: 12 }
@@ -136,14 +141,20 @@ const isCodeLine = (l) => CODE_RE.test(l) || TDE_RE.test(l) || TURKCE_RE.test(l)
 function matchCode(line) {
   const m = line.match(CODE_RE)
   if (m) {
-    const [, prefix, sinif, unite, no] = m
+    const [, prefix, sinif, unite, dort, bes] = m
+    // Beş parçalıysa dördüncü grup KONU, beşinci ÇIKTI olur (Fen Bilimleri).
+    const konu = bes ? Number(dort) : null
+    const no = bes ? Number(bes) : Number(dort)
     return {
       prefix,
-      kod: `${prefix}.${sinif}.${unite}.${no}`, // literal kod
+      kod: bes
+        ? `${prefix}.${sinif}.${unite}.${dort}.${bes}`
+        : `${prefix}.${sinif}.${unite}.${dort}`,
       sinif: Number(sinif),
       unite: Number(unite),
-      no: Number(no),
-      desc: m[5] || "",
+      konu,
+      no,
+      desc: m[6] || "",
     }
   }
   const t = line.match(TDE_RE)
@@ -321,6 +332,7 @@ function parseOutcomes(text) {
       kod: c.kod,
       sinif: c.sinif,
       unite: c.unite,
+      konu: c.konu ?? null,
       no: c.no,
       cikti: cleanCikti(desc),
     })
@@ -342,7 +354,8 @@ function parseOutcomes(text) {
   const cands = new Map() // kod -> { sinif, unite, no, ciktilar: [] }
   for (const o of raw) {
     if (!keep.has(o.prefix)) continue
-    if (!cands.has(o.kod)) cands.set(o.kod, { sinif: o.sinif, unite: o.unite, no: o.no, ciktilar: [] })
+    if (!cands.has(o.kod))
+      cands.set(o.kod, { sinif: o.sinif, unite: o.unite, konu: o.konu ?? null, no: o.no, ciktilar: [] })
     cands.get(o.kod).ciktilar.push(o.cikti)
   }
 
@@ -392,12 +405,96 @@ function parseOutcomes(text) {
   }
 
   return [...cands.entries()]
-    .map(([kod, v]) => ({ kod, sinif: v.sinif, unite: v.unite, no: v.no, cikti: pickBest(v.ciktilar) }))
+    .map(([kod, v]) => ({
+      kod,
+      sinif: v.sinif,
+      unite: v.unite,
+      konu: v.konu,
+      no: v.no,
+      cikti: pickBest(v.ciktilar),
+    }))
     .filter((o) => o.cikti && o.cikti.length >= 8)
-    .sort((a, b) => a.sinif - b.sinif || a.unite - b.unite || a.no - b.no)
+    .sort(
+      (a, b) =>
+        a.sinif - b.sinif || a.unite - b.unite || (a.konu ?? 0) - (b.konu ?? 0) || a.no - b.no
+    )
+}
+
+
+// Cache'teki dosya adı → ders adı. --cache modunda siteye hiç bağlanılmaz;
+// site 2026 yazında ders listesini istemci tarafında üretmeye başladığı için
+// link taraması güvenilmez hâle geldi. PDF'ler zaten .cache/meb altında.
+const DOSYA_DERS = {
+  "2024programbiy9101112Onayli": "Biyoloji",
+  "2024programcog9101112Onayli": "Coğrafya",
+  "2024programdin45678Onayli": "Din Kültürü ve Ahlak Bilgisi",
+  "2024programdin9101112Onayli": "Din Kültürü ve Ahlak Bilgisi",
+  "2024programfel1011Onayli": "Felsefe",
+  "2024programfen345678Onayli": "Fen Bilimleri",
+  "2024programfiz9101112Onayli": "Fizik",
+  "2024programhay123Onayli": "Hayat Bilgisi",
+  "2024programink12Onayli": "T.C. İnkılap Tarihi ve Atatürkçülük",
+  "2024programkim9101112Onayli": "Kimya",
+  "2024programmat1234Onayli": "İlkokul Matematik",
+  "2024programmat5678Onayli": "Ortaokul Matematik",
+  "2024programmath9101112Onayli": "Matematik",
+  "2024programsos4567Onayli": "Sosyal Bilgiler",
+  "2024programtar91011Onayli": "Tarih",
+  "2024programtur1234Onayli": "İlkokul Türkçe",
+  "2024programtur5678Onayli": "Ortaokul Türkçe",
+  "2024programturh9101112Onayli": "Türk Dili ve Edebiyatı",
+  "2024programvat4Onayli": "İnsan Hakları, Yurttaşlık ve Demokrasi",
+  "beden-egitimi-ve-spor-ogretim-programi": "Beden Eğitimi ve Spor",
+  "bilisim-teknolojileri-ve-yazilim-tegm": "Bilişim Teknolojileri ve Yazılım",
+  "gorsel-sanatlar-ogretim-programi": "Görsel Sanatlar",
+  "gorsel-sanatlar-ogretim-programi-temel-egitim": "Görsel Sanatlar",
+  "ingilizce_9_12_ogretim_programi": "İngilizce",
+  "ingilizce_hazirlik_9_12_ogretim_programi": "İngilizce",
+  "muzik-dersi-ogretim-programi": "Müzik",
+  "muzik-dersi-programi-tegm": "Müzik",
+  "teknoloji-tasarim-dersi-ogretim-programi-7-8": "Teknoloji Tasarım",
+  "trafik-guvenligi-programi-tegm": "Trafik Güvenliği",
+}
+
+function cachedenUret() {
+  const curriculum = {}
+  const dosyalar = readdirSync(CACHE)
+    .filter((f) => f.endsWith(".pdf"))
+    .sort()
+  for (const dosya of dosyalar) {
+    const base = dosya.replace(/\.pdf$/i, "")
+    const ders = DOSYA_DERS[base]
+    if (!ders) {
+      console.log(`  ? ${base}: ders adı eşlenmedi, atlandı`)
+      continue
+    }
+    const pdf = join(CACHE, dosya)
+    const txt = pdf.replace(/\.pdf$/i, ".txt")
+    const outcomes = parseOutcomes(pdfToText(pdf, txt))
+    if (outcomes.length === 0) {
+      console.log(`  - ${ders} (${base}): çıktı ayrıştırılamadı`)
+      continue
+    }
+    curriculum[ders] = (curriculum[ders] || []).concat(outcomes)
+    console.log(`  ✓ ${ders.padEnd(38)} ${String(outcomes.length).padStart(4)} çıktı`)
+  }
+  for (const ders of Object.keys(curriculum)) {
+    const uniq = new Map()
+    for (const o of curriculum[ders]) if (!uniq.has(o.kod)) uniq.set(o.kod, o)
+    curriculum[ders] = [...uniq.values()].sort(
+      (a, b) =>
+        a.sinif - b.sinif || a.unite - b.unite || (a.konu ?? 0) - (b.konu ?? 0) || a.no - b.no
+    )
+  }
+  writeCurriculum(curriculum)
 }
 
 async function main() {
+  if (process.argv.includes("--cache")) {
+    console.log("\n## cache'ten üretiliyor (siteye bağlanılmıyor)...")
+    cachedenUret()
+    return
+  }
   const curriculum = {} // dersAdi -> outcomes[]
 
   for (const level of levels) {
@@ -425,7 +522,11 @@ async function main() {
         const html = await fetchText(BASE + path)
         const pdfPaths = [
           ...new Set(
-            [...html.matchAll(/href="(\/upload\/program\/[^"]+\.pdf)"/g)].map((m) => m[1])
+            // Site 2026 yazında program PDF'lerini /upload/program/ altından
+            // /assets/pdf/ altına taşıdı; iki yolu da tanı.
+            [...html.matchAll(/href="((?:\/upload\/program|\/assets\/pdf)\/[^"]+\.pdf)"/g)].map(
+              (m) => m[1]
+            )
           ),
         ]
         if (pdfPaths.length === 0) {
@@ -464,7 +565,30 @@ async function main() {
   writeCurriculum(curriculum)
 }
 
+// tymm.meb.gov.tr'nin WEB sayfaları Fen kodlarını konu seviyesi olmadan,
+// ünite içinde düz sırayla yazıyor: PDF'teki FB.7.1.2.1 → web'de FB.7.1.4.
+// İki gösterim de resmî olarak dolaşımda (MEB çerçeve yıllık planı PDF
+// biçimini, site düz biçimi kullanıyor), bu yüzden ikisini de tutuyoruz.
+// Eşleme: aynı sınıf+ünite içinde (konu, no) sırasına göre 1'den say.
+function duzKodEkle(liste) {
+  const gruplar = new Map()
+  for (const o of liste) {
+    if (o.konu == null) continue
+    const anahtar = `${o.sinif}.${o.unite}`
+    if (!gruplar.has(anahtar)) gruplar.set(anahtar, [])
+    gruplar.get(anahtar).push(o)
+  }
+  for (const [, grup] of gruplar) {
+    grup.sort((a, b) => a.konu - b.konu || a.no - b.no)
+    const onek = grup[0].kod.split(".")[0]
+    grup.forEach((o, i) => {
+      o.kodDuz = `${onek}.${o.sinif}.${o.unite}.${i + 1}`
+    })
+  }
+}
+
 function writeCurriculum(curriculum) {
+  for (const liste of Object.values(curriculum)) duzKodEkle(liste)
   const dersler = Object.keys(curriculum).sort((a, b) => a.localeCompare(b, "tr"))
   const total = dersler.reduce((n, d) => n + curriculum[d].length, 0)
 
@@ -474,9 +598,13 @@ function writeCurriculum(curriculum) {
 
 export interface Kazanim {
   kod: string // örn. "TAR.9.1.1" → DERS.SINIF.ÜNİTE.ÇIKTI
+  // Fen Bilimleri'nde kod beş parçalıdır (DERS.SINIF.ÜNİTE.KONU.ÇIKTI,
+  // örn. "FB.7.1.2.1"); bu derste konu ve kodDuz alanları da dolar.
   sinif: number
   unite: number
+  konu?: number // yalnız Fen Bilimleri
   no: number
+  kodDuz?: string // tymm.meb.gov.tr web sayfalarındaki düz karşılık (FB.7.1.4)
   cikti: string
 }
 
@@ -485,7 +613,9 @@ export const CURRICULUM: Record<string, Kazanim[]> = {
   for (const ders of dersler) {
     ts += `  ${JSON.stringify(ders)}: [\n`
     for (const o of curriculum[ders]) {
-      ts += `    { kod: ${JSON.stringify(o.kod)}, sinif: ${o.sinif}, unite: ${o.unite}, no: ${o.no}, cikti: ${JSON.stringify(o.cikti)} },\n`
+      const konuAlan = o.konu != null ? `konu: ${o.konu}, ` : ""
+      const duzAlan = o.kodDuz ? `kodDuz: ${JSON.stringify(o.kodDuz)}, ` : ""
+      ts += `    { kod: ${JSON.stringify(o.kod)}, sinif: ${o.sinif}, unite: ${o.unite}, ${konuAlan}no: ${o.no}, ${duzAlan}cikti: ${JSON.stringify(o.cikti)} },\n`
     }
     ts += `  ],\n`
   }

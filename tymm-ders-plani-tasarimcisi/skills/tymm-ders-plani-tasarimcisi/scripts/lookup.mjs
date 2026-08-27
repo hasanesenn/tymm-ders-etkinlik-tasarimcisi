@@ -16,6 +16,11 @@
 //   node scripts/lookup.mjs kategoriler
 //     → SKILLS içindeki tüm kategori adlarını listeler
 //
+//   node scripts/lookup.mjs kod FB.7.1.4
+//     → kazanımı kodun HER İKİ biçiminden de bulur (Fen'de PDF kodu
+//       FB.7.1.2.1, web sitesindeki düz karşılığı FB.7.1.4) ve süreç
+//       bileşenlerini de birlikte döndürür
+//
 //   node scripts/lookup.mjs bilesen "Fen Bilimleri" 5
 //     → o ders + sınıfın öğrenme çıktılarını SÜREÇ BİLEŞENLERİYLE döndürür
 //       (yıllık planın SÜREÇ BİLEŞENLERİ sütunu için)
@@ -74,6 +79,21 @@ if (cmd === "dersler") {
     process.exit(1)
   }
   console.log(JSON.stringify(getBeceriler(arg1), null, 2))
+} else if (cmd === "kod") {
+  // Fen'de iki kod şeması dolaşımda (PDF: FB.7.1.2.1, web sitesi: FB.7.1.4).
+  // Hangisi yazılırsa yazılsın kaydı bul ve varsa süreç bileşenlerini de ekle.
+  if (!arg1) { console.error("Kullanım: kod <kazanım kodu>"); process.exit(1) }
+  let bulunan = null, ders = null
+  for (const [d, liste] of Object.entries(CURRICULUM)) {
+    const k = liste.find((x) => x.kod === arg1 || x.kodDuz === arg1)
+    if (k) { bulunan = k; ders = d; break }
+  }
+  if (!bulunan) {
+    console.error(`"${arg1}" bulunamadı. Fen kodları hem beş parçalı (FB.7.1.2.1) hem düz (FB.7.1.4) biçimde aranır.`)
+    process.exit(1)
+  }
+  const bilesen = getBilesenler(bulunan.kod)
+  console.log(JSON.stringify({ ders, ...bulunan, bilesenler: bilesen ? bilesen.bilesenler : null }, null, 2))
 } else if (cmd === "bilesen") {
   if (!arg1) { console.error("Kullanım: bilesen <ders> [sinif]  |  bilesen <kod>"); process.exit(1) }
   // Tek kod sorgusu: "FB.5.1.2.2" gibi
@@ -102,6 +122,6 @@ if (cmd === "dersler") {
     console.log(JSON.stringify(sonuc, null, 2))
   }
 } else {
-  console.error("Komutlar: dersler | kategoriler | kazanim <ders> [sinif] | beceri <kategori> | bilesen <ders> [sinif] | bilesen <kod>")
+  console.error("Komutlar: dersler | kategoriler | kazanim <ders> [sinif] | kod <kazanım kodu> | beceri <kategori> | bilesen <ders> [sinif] | bilesen <kod>")
   process.exit(1)
 }

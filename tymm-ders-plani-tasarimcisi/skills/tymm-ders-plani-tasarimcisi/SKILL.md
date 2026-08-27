@@ -4,7 +4,7 @@ description: Türkiye Yüzyılı Maarif Modeli (TYMM) kazanımlarına dayalı ik
 license: Proprietary — TeacherX
 metadata:
   author: Hasan Esen / TeacherX
-  version: "1.4.0"
+  version: "1.5.0"
   language: tr
   domain: egitim, mufredat-tasarimi, farklilastirma
 ---
@@ -60,7 +60,7 @@ Bu skill'in yanında gerçek, deterministik olarak tymm.meb.gov.tr'den derlenmi�
 veri kaynağı var (ezbere/halüsinasyon değil):
 
 - `references/curriculum.ts` (+ çalıştırılabilir hâli `references/data.mjs`) — 24 ders,
-  2148 öğrenme çıktısı, kod + sınıf + ünite + metin
+  2223 öğrenme çıktısı, kod + sınıf + ünite + metin
 - `references/skills.ts` (+ `data.mjs`) — Erdem-Değer-Eylem Çerçevesi (20 değer),
   Kavramsal Beceriler, Eğilimler, Sosyal-Duygusal Öğrenme Becerileri, Okuryazarlık
   Becerileri (kod + ad + varsa tanım)
@@ -73,6 +73,7 @@ veri kaynağı var (ezbere/halüsinasyon değil):
   node scripts/lookup.mjs kazanim "Tarih" 10          # ders + sınıf öğrenme çıktıları
   node scripts/lookup.mjs kategoriler                 # beceri/değer kategorileri
   node scripts/lookup.mjs beceri "Eğilimler"           # bir kategorinin tam listesi
+  node scripts/lookup.mjs kod FB.7.1.4                # kodun iki biçiminden de bul
   node scripts/lookup.mjs bilesen "Fen Bilimleri" 5   # çıktı + süreç bileşenleri
   node scripts/lookup.mjs bilesen FB.5.1.2.2          # tek çıktının bileşenleri
   ```
@@ -80,10 +81,13 @@ veri kaynağı var (ezbere/halüsinasyon değil):
   Ders veya kategori adı birebir eşleşmezse script sessizce boş dönmez, en yakın 3
   adayı önerir — o önerilerden doğru olanı seç, uydurma.
 
-**İki dosya çelişirse `bilesen` kazanır.** `curriculum.ts` Fen Bilimleri kodlarını
-dört parçalı derlemiş ve çıktı kaybetmiş; `surec-bilesenleri.mjs` programdaki
-gerçek beş parçalı kodu (`FB.5.1.2.2`) taşır. Fen Bilimleri'nde kazanım kodunu
-**her zaman `bilesen` sorgusundan al**. Diğer derslerde ikisi de aynı kodu verir.
+**Fen Bilimleri'nde iki kod şeması var, ikisi de resmî.** Öğretim programı
+PDF'i ve MEB çerçeve yıllık planı beş parçalı kod kullanır (`FB.7.1.2.1`);
+tymm.meb.gov.tr'nin ünite sayfaları konu seviyesini kaldırıp ünite içinde düz
+sayar (aynı çıktı orada `FB.7.1.4`). Veride ikisi de var: `kod` beş parçalı,
+`kodDuz` düz karşılık. **Yıllık plan ve resmî belgelerde `kod`'u kullan**,
+öğretmen siteden baktığı için farklı bir kod söylüyorsa `lookup.mjs kod` ile
+ikisinden de bulabilirsin ve çıktıda ikisini birden belirt.
 
 **Sıra şu şekilde işlesin:**
 1. Öğretmen kazanımı zaten metin/kod olarak verdiyse, aynen onu kullan.
@@ -249,12 +253,8 @@ Türkçe, sade, doğrudan uygulanabilir. MEB'in resmi/bürokratik dilini taklit 
 - **Türk Dili ve Edebiyatı çıktıları `-abilme` ile bitmez** — o program
   betimleyici cümleler kullanır ("Seçim yapar."). Bu bir ayrıştırma hatası
   değil, programın kendi yapısı.
-- **`curriculum.ts`'te Fen Bilimleri kodları eksik derinlikte.** Dört parçalı
-  (`FB.5.1.2`) derlenmiş; gerçek Fen kodu beş parçalı (`FB.5.1.2.2`), çünkü Fen'de
-  ünite altında ayrıca *konu (içerik çerçevesi)* seviyesi var. Aynı konunun birden
-  çok çıktısı tek kayda inmiş ve bir kısmı kaybolmuş (5. sınıf Fen: `curriculum.ts`'te
-  18 kayıt, gerçekte 28 çıktı). **Çözüm: Fen'de `bilesen` sorgusunu kullan** —
-  `surec-bilesenleri.mjs` doğru kodları taşıyor. `curriculum.ts` henüz düzeltilmedi.
+- **Türk Dili ve Edebiyatı verisi 2024 tarihli programdan.** MEB 19.08.2026
+  tarihli revize bir TDE programı yayımladı; bu sürümde henüz işlenmedi.
 - **Süreç bileşenleri Türkçe, Türk Dili ve Edebiyatı ve İngilizce'de yok.** Bu
   programlar çıktının altına `a) b) c)` koymuyor (Türkçe "Öğrenme Yaşantısı"
   paragrafı kullanıyor, İngilizce CEFR tabanlı). Bu üç derste süreç bileşeni
