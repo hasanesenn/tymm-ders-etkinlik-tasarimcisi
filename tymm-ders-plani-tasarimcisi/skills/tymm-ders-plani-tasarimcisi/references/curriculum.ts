@@ -1,39 +1,31 @@
-// OTOMATİK ÜRETİLDİ — elle düzenleme. Kaynak: https://tymm.meb.gov.tr
-// scripts/scrape-curriculum.mjs ile yeniden üretilir.
+// OTOMATİK ÜRETİLDİ — elle düzenlemeyin.
+// scripts/build-tymm-data.mjs ile surec-bilesenleri.mjs ile BİRLİKTE üretilir;
+// iki dosyanın kodları, ders adları ve çıktı metinleri yazmadan önce
+// karşılaştırılır. Kaynak: https://tymm.meb.gov.tr öğretim programı PDF'leri.
 // Üretim: 2026-08-27 | 24 ders, 2223 öğrenme çıktısı
-
 //
 // FEN BİLİMLERİ — İKİ KOD ŞEMASI
-//   Fen'de ünite altında ayrıca KONU seviyesi var; öğretim programı PDF'i ve
-//   MEB çerçeve yıllık planı beş parçalı kod kullanır: FB.7.1.2.1
-//   tymm.meb.gov.tr'nin ünite sayfaları ise konu seviyesini kaldırıp ünite
-//   içinde düz sayar: aynı çıktı orada FB.7.1.4'tür.
-//   İkisi de resmî olarak dolaşımda olduğu için ikisi de tutuluyor:
-//     kod     → beş parçalı, PDF ve çerçeve yıllık plan biçimi
-//     kodDuz  → web sitesindeki düz karşılık
-//     konu    → ünite altındaki konu numarası
-//   Eşleme aynı sınıf+ünite içinde (konu, no) sırasına göre 1'den sayılarak
-//   üretilir; tymm.meb.gov.tr ünite sayfalarına karşı doğrulandı.
+//   Fen'de ünite altında ayrıca KONU seviyesi var. Öğretim programı PDF'i ve
+//   MEB çerçeve yıllık planı beş parçalı kod kullanır (FB.7.1.2.1);
+//   tymm.meb.gov.tr ünite sayfaları konu seviyesini kaldırıp ünite içinde düz
+//   sayar (aynı çıktı orada FB.7.1.4). İkisi de tutuluyor: kod + kodDuz.
 //
 // TÜRKÇE — DÖRT ÖĞRENME ALANI
-//   T.D = Dinleme/İzleme (unite 1), T.O = Okuma (2),
-//   T.K = Konuşma (3), T.Y = Yazma (4)
+//   T.D Dinleme/İzleme (unite 1) · T.O Okuma (2) · T.K Konuşma (3) · T.Y Yazma (4)
 //
-// BİLİNEN AÇIK SORUNLAR:
-//   - TG.4.1.2 tek bozuk kayıt: kaynak sayfada sütunlar iç içe geçmiş.
+// BİLİNEN AÇIK SORUNLAR
+//   - TG.4.1.2: kaynak sayfada sütunlar iç içe geçmiş, metin paramparça.
 //   - İngilizce kapsam dışı (CEFR tabanlı farklı yapı).
 //   - Türk Dili ve Edebiyatı verisi 2024 tarihli programdan; MEB 19.08.2026
 //     tarihli revize bir program yayımladı, henüz işlenmedi.
 
 export interface Kazanim {
-  kod: string // örn. "TAR.9.1.1" → DERS.SINIF.ÜNİTE.ÇIKTI
-  // Fen Bilimleri'nde kod beş parçalıdır (DERS.SINIF.ÜNİTE.KONU.ÇIKTI,
-  // örn. "FB.7.1.2.1"); bu derste konu ve kodDuz alanları da dolar.
+  kod: string // "TAR.9.1.1" → DERS.SINIF.ÜNİTE.ÇIKTI (Fen'de beş parçalı)
   sinif: number
   unite: number
   konu?: number // yalnız Fen Bilimleri
   no: number
-  kodDuz?: string // tymm.meb.gov.tr web sayfalarındaki düz karşılık (FB.7.1.4)
+  kodDuz?: string // tymm.meb.gov.tr web biçimi (yalnız Fen)
   cikti: string
 }
 
@@ -1267,7 +1259,7 @@ export const CURRICULUM: Record<string, Kazanim[]> = {
     { kod: "KİM.10.2.6", sinif: 10, unite: 2, no: 6, cikti: "Çözünürlüğe etki eden faktörleri belirlemeye yönelik kanıt kullanabilme" },
     { kod: "KİM.10.2.7", sinif: 10, unite: 2, no: 7, cikti: "Çözeltileri sınıflandırabilme" },
     { kod: "KİM.10.2.8", sinif: 10, unite: 2, no: 8, cikti: "Çözünen maddenin tanecik sayısının çözeltilerin kaynama ve donma noktasına etkisini belirlemeye yönelik hipotez oluşturabilme" },
-    { kod: "KİM.10.3.1", sinif: 10, unite: 3, no: 1, cikti: "Kimya dersinde mikro ölçekli deney tercih etmenin sonuçlarını ekosistem açı sından değerlendirebilme" },
+    { kod: "KİM.10.3.1", sinif: 10, unite: 3, no: 1, cikti: "Kimya dersinde mikro ölçekli deney tercih etmenin sonuçlarını ekosistem açısından değerlendirebilme" },
     { kod: "KİM.10.3.2", sinif: 10, unite: 3, no: 2, cikti: "Kimyasal tepkimeler sonucunda atmosferin doğasındaki değişimin ekosisteme etkilerine yönelik problem çözebilme" },
     { kod: "KİM.11.1.1", sinif: 11, unite: 1, no: 1, cikti: "Fiziksel ve kimyasal olaylardaki enerji değişimine ilişkin deney yapabilme" },
     { kod: "KİM.11.1.2", sinif: 11, unite: 1, no: 2, cikti: "Maddelerin enerji kaynağı olma potansiyeline ilişkin hipotezler oluşturabilme" },
@@ -1291,7 +1283,7 @@ export const CURRICULUM: Record<string, Kazanim[]> = {
     { kod: "KİM.11.2.12", sinif: 11, unite: 2, no: 12, cikti: "Asidik ya da bazik ürünlerin en uygun olanına karar verebilme" },
     { kod: "KİM.11.2.13", sinif: 11, unite: 2, no: 13, cikti: "Suda az çözünen tuzların çözünürlüğüne ilişkin model oluşturabilme" },
     { kod: "KİM.11.2.14", sinif: 11, unite: 2, no: 14, cikti: "Suda az çözünen tuzların çözünürlüğüne etki eden faktörlere ilişkin bilimsel çıkarım yapabilme" },
-    { kod: "KİM.11.3.1", sinif: 11, unite: 3, no: 1, cikti: "Evsel atıklardan fermantasyon yöntemi ile yeşil hidrojen enerjisi elde etme sü recine yönelik hipotez oluşturabilme" },
+    { kod: "KİM.11.3.1", sinif: 11, unite: 3, no: 1, cikti: "Evsel atıklardan fermantasyon yöntemi ile yeşil hidrojen enerjisi elde etme sürecine yönelik hipotez oluşturabilme" },
     { kod: "KİM.11.3.2", sinif: 11, unite: 3, no: 2, cikti: "Nanoteknolojik ürünlerin seçimine yönelik eleştirel düşünebilme" },
     { kod: "KİM.11.3.3", sinif: 11, unite: 3, no: 3, cikti: "Mikroplastik ve nanoplastiklerin etkilerini sorgulayabilme" },
     { kod: "KİM.12.1.1", sinif: 12, unite: 1, no: 1, cikti: "İndirgenme-yükseltgenme (redoks) tepkime sürecine ilişkin bilimsel gözlem yapabilme" },
@@ -1646,7 +1638,7 @@ export const CURRICULUM: Record<string, Kazanim[]> = {
     { kod: "MAT.8.5.3", sinif: 8, unite: 5, no: 3, cikti: "Öteleme ve yansıma dönüşümlerini içeren problemleri çözebilme" },
     { kod: "MAT.8.6.1", sinif: 8, unite: 6, no: 1, cikti: "Kategorik veya nicel (kesikli-sürekli) veri ile çalışabilme ve veriye dayalı karar verebilme" },
     { kod: "MAT.8.6.2", sinif: 8, unite: 6, no: 2, cikti: "Başkaları tarafından oluşturulan kategorik veya nicel (kesikli-sürekli) veriye dayalı istatistiksel sonuç veya yorumları tartışabilme" },
-    { kod: "MAT.8.7.1", sinif: 8, unite: 7, no: 1, cikti: "Gerçek yaşamda karşılaşabileceği bir olayın olasılığına ilişkin farklı olasılık yak laşımlarından (öznel, deneysel, teorik) uygun olanı belirleyerek karar verebilme" },
+    { kod: "MAT.8.7.1", sinif: 8, unite: 7, no: 1, cikti: "Gerçek yaşamda karşılaşabileceği bir olayın olasılığına ilişkin farklı olasılık yaklaşımlarından (öznel, deneysel, teorik) uygun olanı belirleyerek karar verebilme" },
   ],
   "Ortaokul Türkçe": [
     { kod: "T.D.5.1", sinif: 5, unite: 1, no: 1, cikti: "Dinlemede/izlemede materyal seçimini yönetebilme" },
@@ -2151,7 +2143,7 @@ export const CURRICULUM: Record<string, Kazanim[]> = {
     { kod: "TAR.9.1.2", sinif: 9, unite: 1, no: 2, cikti: "Tarihin doğasını farklı kaynaklar üzerinden inceleyebilme" },
     { kod: "TAR.9.1.3", sinif: 9, unite: 1, no: 3, cikti: "Tarihsel bilginin üretim sürecini çözümleyebilme" },
     { kod: "TAR.9.1.4", sinif: 9, unite: 1, no: 4, cikti: "Dijitalleşmenin tarih araştırma ve yazımının dönüşümüne etkisini değerlendirebilme" },
-    { kod: "TAR.9.2.1", sinif: 9, unite: 2, no: 1, cikti: "Tarım Devrimi’nin Eski Çağ medeniyetlerindeki yerleşmeye ve ekonomik faali yetlere etkisini değerlendirebilme" },
+    { kod: "TAR.9.2.1", sinif: 9, unite: 2, no: 1, cikti: "Tarım Devrimi’nin Eski Çağ medeniyetlerindeki yerleşmeye ve ekonomik faaliyetlere etkisini değerlendirebilme" },
     { kod: "TAR.9.2.2", sinif: 9, unite: 2, no: 2, cikti: "Eski Çağ’daki farklı medeniyetlerin yönetim ve ordu sistemlerini özetleyebilme" },
     { kod: "TAR.9.2.3", sinif: 9, unite: 2, no: 3, cikti: "Eski Çağ medeniyetlerinde hukukun toplumsal düzeni sağlamadaki rolünü sorgulayabilme" },
     { kod: "TAR.9.2.4", sinif: 9, unite: 2, no: 4, cikti: "Eski Çağ toplumlarındaki inançlar ile bilim ve sanat anlayışları arasındaki ilişkiyi yorumlayabilme" },
@@ -2178,7 +2170,7 @@ export const CURRICULUM: Record<string, Kazanim[]> = {
     { kod: "TAR.11.1.2", sinif: 11, unite: 1, no: 2, cikti: "Lale Devri’nde Osmanlı devlet ve toplum hayatında meydana gelen değişimi tarihsel bağlamı içerisinde yorumlayabilme" },
     { kod: "TAR.11.1.3", sinif: 11, unite: 1, no: 3, cikti: "1755 Lizbon ve 1766 İstanbul depremlerini ortaya çıkardığı etkiler bakımından karşılaştırabilme" },
     { kod: "TAR.11.1.4", sinif: 11, unite: 1, no: 4, cikti: "Sanayi Devrimi’nin meydana getirdiği siyasi, sosyal ve ekonomik değişimi neden ve sonuçlarıyla birlikte yorumlayabilme" },
-    { kod: "TAR.11.2.1", sinif: 11, unite: 2, no: 1, cikti: "Fransız İhtilali’nin devlet ve toplum hayatında meydana getirdiği değişimi ne den ve sonuçlarıyla yorumlayabilme" },
+    { kod: "TAR.11.2.1", sinif: 11, unite: 2, no: 1, cikti: "Fransız İhtilali’nin devlet ve toplum hayatında meydana getirdiği değişimi neden ve sonuçlarıyla yorumlayabilme" },
     { kod: "TAR.11.2.2", sinif: 11, unite: 2, no: 2, cikti: "1789-1908 yılları arasında meydana gelen siyasi, askerî ve idari gelişmelerin Osmanlı Devleti’nin yönetim ve toplum yapısına etkilerini sorgulayabilme" },
     { kod: "TAR.11.2.3", sinif: 11, unite: 2, no: 3, cikti: "1789-1908 yılları arasında Osmanlı Devleti’nde bilim, sanat ve teknoloji alanlarında yapılan uygulamaları yorumlayabilme" },
     { kod: "TAR.11.2.4", sinif: 11, unite: 2, no: 4, cikti: "Osmanlı Devleti’nin sanayileşmede geri kalmasına neden olan etmenleri ortadan kaldırmaya yönelik alternatif fikirler üretebilme" },
@@ -2199,7 +2191,7 @@ export const CURRICULUM: Record<string, Kazanim[]> = {
     { kod: "TT.7.4.1", sinif: 7, unite: 4, no: 1, cikti: "Tasarım problemini çözmek için ürün oluşturabilme" },
     { kod: "TT.7.4.2", sinif: 7, unite: 4, no: 2, cikti: "Yapılan tasarımı paylaşmak için çoklu ortam sunusu hazırlayabilme" },
     { kod: "TT.7.5.2", sinif: 7, unite: 5, no: 2, cikti: "İşlevsel özelliklerin mimari tasarımda yapısal farklılıklara yol açtığını algılayabilme" },
-    { kod: "TT.7.6.1", sinif: 7, unite: 6, no: 1, cikti: "Canlılar ve doğal yapıların yapısal, biçimsel ve görsel özelliklerini sanatsal göz lemleyebilme" },
+    { kod: "TT.7.6.1", sinif: 7, unite: 6, no: 1, cikti: "Canlılar ve doğal yapıların yapısal, biçimsel ve görsel özelliklerini sanatsal gözlemleyebilme" },
     { kod: "TT.7.6.2", sinif: 7, unite: 6, no: 2, cikti: "Gündelik hayatında var olan bir problemi çözebilmek için doğa ve canlıları tasarımla ilişkilendirebilme" },
     { kod: "TT.7.6.3", sinif: 7, unite: 6, no: 3, cikti: "Gündelik hayatında var olan bir problemin çözümünde biyotaklit yaklaşımını kullanarak ürün oluşturabilme" },
     { kod: "TT.7.7.1", sinif: 7, unite: 7, no: 1, cikti: "Enerji kavramı, enerji kaynakları, türleri ve dönüşümleri hakkında bilgi toplayabilme" },
@@ -2311,7 +2303,7 @@ export const CURRICULUM: Record<string, Kazanim[]> = {
   ],
 }
 
-// Bir ders + sınıf için öğrenme çıktılarını döndürür (prompt'a gömmek için).
+// Bir ders + sınıf için öğrenme çıktılarını döndürür.
 export function getKazanimlar(ders: string, sinif?: number): Kazanim[] {
   const list = CURRICULUM[ders] ?? []
   return sinif ? list.filter((k) => k.sinif === sinif) : list

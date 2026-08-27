@@ -4,7 +4,7 @@ description: Türkiye Yüzyılı Maarif Modeli (TYMM) kazanımlarına dayalı ik
 license: Proprietary — TeacherX
 metadata:
   author: Hasan Esen / TeacherX
-  version: "1.5.1"
+  version: "1.5.2"
   language: tr
   domain: egitim, mufredat-tasarimi, farklilastirma
 ---
@@ -82,6 +82,11 @@ veri kaynağı var (ezbere/halüsinasyon değil):
 
   Ders veya kategori adı birebir eşleşmezse script sessizce boş dönmez, en yakın 3
   adayı önerir — o önerilerden doğru olanı seç, uydurma.
+
+İki veri dosyası (`curriculum.ts` ve `surec-bilesenleri.mjs`) tek bir üretim
+adımında, aynı PDF metninden birlikte üretilir ve kodları, ders adları, düz
+kodları ve çıktı metinleri yazılmadan önce karşılaştırılır. Bu yüzden ikisi
+arasında kayma olamaz — biri diğerinden eski kalamaz.
 
 **Fen Bilimleri'nde iki kod şeması var, ikisi de resmî.** Öğretim programı
 PDF'i ve MEB çerçeve yıllık planı beş parçalı kod kullanır (`FB.7.1.2.1`);

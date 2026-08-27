@@ -1,7 +1,7 @@
 {
   "name": "tymm-ders-plani-tasarimcisi",
   "description": "Türkiye Yüzyılı Maarif Modeli (TYMM) temelli iki tür plan üretir: aktif öğrenme ve farklılaştırma içeren ders/etkinlik planı, ve MEB çerçeve yıllık plan biçiminde ünitelendirilmiş yıllık plan.",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "author": {
     "name": "TeacherX"
   }

@@ -92,8 +92,15 @@ işaretler.
 
 ## Katkı / güncelleme
 
-Kazanım verisini kendi `scrape-curriculum.mjs` / `scrape-skills.mjs`
-script'lerinizle yeniden ürettikçe `references/` altındaki dosyaları
-güncelleyip bu repoya push edebilirsiniz. Yol 2 ile kuran kullanıcılar
+Veri dosyaları `scripts/build-tymm-data.mjs` ile **tek adımda** üretilir:
+
+```
+node scripts/build-tymm-data.mjs --out-dir references
+```
+
+Bu komut `curriculum.ts` ve `surec-bilesenleri.mjs` dosyalarını aynı PDF
+metninden birlikte üretir ve yazmadan önce ikisinin kodlarını, ders adlarını,
+düz kodlarını ve çıktı metinlerini karşılaştırır; tutarsızlık bulursa hata
+verip durur. Böylece iki dosya birbirinden kayamaz. Yol 2 ile kuran kullanıcılar
 otomatik güncel sürümü alır; Yol 1 ile kuranların zip'i elle yeniden
 yüklemesi gerekir.

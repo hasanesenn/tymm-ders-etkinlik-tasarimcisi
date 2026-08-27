@@ -17,7 +17,7 @@
 import { execFileSync } from "node:child_process"
 import { mkdirSync, existsSync, writeFileSync, readFileSync, readdirSync } from "node:fs"
 import { join, dirname } from "node:path"
-import { fileURLToPath } from "node:url"
+import { fileURLToPath, pathToFileURL } from "node:url"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, "..")
@@ -632,7 +632,16 @@ export function getKazanimlar(ders: string, sinif?: number): Kazanim[] {
   console.log(`\n✅ ${OUT} yazıldı — ${dersler.length} ders, ${total} çıktı`)
 }
 
-main().catch((e) => {
-  console.error(e)
-  process.exit(1)
-})
+// Doğrudan çalıştırıldığında üretim yapar; içeri aktarıldığında yalnızca
+// fonksiyonları verir (build-tymm-data.mjs tek geçişte ikisini de kullanıyor).
+const dogrudanCalisiyor =
+  process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href
+
+if (dogrudanCalisiyor) {
+  main().catch((e) => {
+    console.error(e)
+    process.exit(1)
+  })
+}
+
+export { parseOutcomes, duzKodEkle, pdfToText, DOSYA_DERS, CACHE }

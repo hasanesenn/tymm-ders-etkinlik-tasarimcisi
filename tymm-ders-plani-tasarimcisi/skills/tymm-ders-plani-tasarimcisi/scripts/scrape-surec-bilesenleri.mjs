@@ -21,7 +21,7 @@
 
 import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs"
 import { join, dirname } from "node:path"
-import { fileURLToPath } from "node:url"
+import { fileURLToPath, pathToFileURL } from "node:url"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, "..")
@@ -302,4 +302,11 @@ export function getBilesenler(kod) {
   )
 }
 
-main()
+// Doğrudan çalıştırıldığında üretim yapar; içeri aktarıldığında yalnızca
+// fonksiyonları verir.
+const dogrudanCalisiyor =
+  process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href
+
+if (dogrudanCalisiyor) main()
+
+export { parse as parseBilesenler, duzKodEkle as duzKodEkleBilesen, KAPSAM_DISI }
